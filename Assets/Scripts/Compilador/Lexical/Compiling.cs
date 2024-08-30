@@ -53,27 +53,28 @@ public class Compiling //Esto por lo visto si lo invocas con .Lexical basicament
                 __LexicalProcess.RegisterKeyword("Bool", TokenValues.Bool); // Bool
                 __LexicalProcess.RegisterKeyword("Action", TokenValues.Action); // Action
 
-                __LexicalProcess.RegisterKeyword("targets", TokenValues.targets); // targets
-                __LexicalProcess.RegisterKeyword("target", TokenValues.target); // target
-                __LexicalProcess.RegisterKeyword("HandOfPlayer", TokenValues.HandOfPlayer); // HandOfPlayer
-                __LexicalProcess.RegisterKeyword("FieldOfPlayer", TokenValues.FieldOfPlayer); // FieldOfPlayer
-                __LexicalProcess.RegisterKeyword("GraveyardOfPlayer", TokenValues.GraveyardOfPlayer); // GraveyardOfPlayer
-                __LexicalProcess.RegisterKeyword("DeckOfPlayer", TokenValues.DeckOfPlayer); // DeckOfPlayer
-                __LexicalProcess.RegisterKeyword("Hand", TokenValues.Hand); // Hand
-                __LexicalProcess.RegisterKeyword("Field", TokenValues.Field); // Field
-                __LexicalProcess.RegisterKeyword("Graveyard", TokenValues.Graveyard); // Graveyard
-                __LexicalProcess.RegisterKeyword("Deck", TokenValues.Deck); // Deck
-                __LexicalProcess.RegisterKeyword("Owner", TokenValues.Owner); // Owner
-                __LexicalProcess.RegisterKeyword("TriggerPlayer", TokenValues.TriggerPlayer); // TriggerPlayer
-                __LexicalProcess.RegisterKeyword("Board", TokenValues.Board); // Board
+                __LexicalProcess.RegisterOperator("targets", TokenValues.targets); // targets
+                __LexicalProcess.RegisterOperator("target", TokenValues.target); // target
 
-                __LexicalProcess.RegisterKeyword("context", TokenValues.context); // context
-                __LexicalProcess.RegisterKeyword("Find", TokenValues.Find); // Find
-                __LexicalProcess.RegisterKeyword("Push", TokenValues.Push); // Push
-                __LexicalProcess.RegisterKeyword("SendBottom", TokenValues.SendBotttom); // SendBottom
-                __LexicalProcess.RegisterKeyword("Pop", TokenValues.Pop); // Pop
-                __LexicalProcess.RegisterKeyword("Remove", TokenValues.Remove); // Remove
-                __LexicalProcess.RegisterKeyword("Shuffle", TokenValues.Shuffle); // Shuffle
+                __LexicalProcess.RegisterOperator("HandOfPlayer", TokenValues.HandOfPlayer); // HandOfPlayer
+                __LexicalProcess.RegisterOperator("FieldOfPlayer", TokenValues.FieldOfPlayer); // FieldOfPlayer
+                __LexicalProcess.RegisterOperator("GraveyardOfPlayer", TokenValues.GraveyardOfPlayer); // GraveyardOfPlayer
+                __LexicalProcess.RegisterOperator("DeckOfPlayer", TokenValues.DeckOfPlayer); // DeckOfPlayer
+                __LexicalProcess.RegisterOperator("Hand", TokenValues.Hand); // Hand
+                __LexicalProcess.RegisterOperator("Field", TokenValues.Field); // Field
+                __LexicalProcess.RegisterOperator("Graveyard", TokenValues.Graveyard); // Graveyard
+                __LexicalProcess.RegisterOperator("Deck", TokenValues.Deck); // Deck
+                __LexicalProcess.RegisterOperator("Owner", TokenValues.Owner); // Owner
+                __LexicalProcess.RegisterOperator("TriggerPlayer", TokenValues.TriggerPlayer); // TriggerPlayer
+                __LexicalProcess.RegisterOperator("Board", TokenValues.Board); // Board
+
+                __LexicalProcess.RegisterOperator("context", TokenValues.context); // context
+                __LexicalProcess.RegisterOperator("Find", TokenValues.Find); // Find
+                __LexicalProcess.RegisterOperator("Push", TokenValues.Push); // Push
+                __LexicalProcess.RegisterOperator("SendBottom", TokenValues.SendBotttom); // SendBottom
+                __LexicalProcess.RegisterOperator("Pop", TokenValues.Pop); // Pop
+                __LexicalProcess.RegisterOperator("Remove", TokenValues.Remove); // Remove
+                __LexicalProcess.RegisterOperator("Shuffle", TokenValues.Shuffle); // Shuffle
 
                 __LexicalProcess.RegisterKeyword("card", TokenValues.card); // card
                 __LexicalProcess.RegisterKeyword("Type", TokenValues.Type); // Type

@@ -6,4 +6,8 @@ effect {
 		Perro: String
 	},
 	Action: (targets, context) => {
-		4 > 5 && 6> 5 || 7 < 2
+		}
+
+}
+
+		perro.HandOf.Deck = 45 + 2

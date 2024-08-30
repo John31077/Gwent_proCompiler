@@ -78,7 +78,7 @@ public class TokenValues //Clase donde se encuentran los valores de los tokens (
     public const string OpenCorchetes = "OpenCorchete"; // [
     public const string ClosedCorchetes = "ClosedCorchetes"; // ]
 
-    //Zona de palabras claves
+    //Zona de palabras claves y algunos identificadores
 
     public const string effect = "effect"; // effect
     public const string Name = "Name"; // Name
