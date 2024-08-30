@@ -3,6 +3,7 @@ using System.IO.Pipes;
 //using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using UnityEditor;
 using UnityEngine;
 
 public class Parser
@@ -12,6 +13,7 @@ public class Parser
         Stream = stream;
     }
     public TokenStream Stream { get; private set; }
+    public static List<CompilingError> compilingErrors = new List<CompilingError>(); //Necesario para el metodo de brackets
 
     public ElementalProgram ParseProgram(List<CompilingError> errors)
     {
@@ -24,15 +26,6 @@ public class Parser
         {
             Effect effect = ParseEffect(errors);
             program.Effects[effect.Id] = effect;
-
-            //After every Element declaration must be a ;
-            /*if (!Stream.Next(TokenValues.StatementSeparator))
-            {
-                errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "; expected"));
-                System.Console.WriteLine("Hay errores " + errors.Count);
-                return program;
-            }*/
-
             if (!Stream.Next())
             {
                 break;
@@ -311,7 +304,74 @@ public class Parser
         //Ver bien esta parte
     }*/
 
+    private Expression ParsePredicate(List<CompilingError> errors)
+    {
+        if (!Stream.Next(TokenValues.OpenCurlyBraces))
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "( expected"));
+        }
 
+        Expression? exp = ParseExpression(); 
+        if(exp == null)
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Invalid, "Bad expression"));
+        }
+
+        if (!Stream.Next(TokenValues.ClosedCurlyBraces))
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ") expected"));
+        }
+
+        if (!Stream.Next(TokenValues.Implica))
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "=> expected"));
+        }
+
+        Expression? exp1 = ParseExpression(); 
+        if(exp == null)
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Invalid, "Bad expression"));
+        }
+
+        Predicate predicate = new Predicate(Stream.LookAhead().Location);
+        predicate.Left = exp;
+        predicate.Right = exp1;
+        if (predicate.Left == null || predicate.Right == null)
+        {
+            return null;
+        }
+        return predicate;
+    }
+    private Expression ParseBracket(List<CompilingError> errors, Expression expression)
+    {
+        if (Stream.LookAhead(1).Value == TokenValues.OpenBracket)
+        {
+            Stream.MoveNext(1);
+
+            List<CompilingError> errorsPredicate = new List<CompilingError>();
+            Bracket bracket = new Bracket(Stream.LookAhead().Location);
+            Expression exp = ParseExpression();
+            if (exp == null)
+            {
+                exp = ParsePredicate(compilingErrors);
+                if (exp == null)
+                {
+                    return null;
+                }
+            }
+            
+            if (!Stream.Next(TokenValues.ClosedBracket))
+            {
+                errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ") expected"));
+            }
+
+            bracket.Left = expression;
+            bracket.Right = exp;
+            return bracket;
+
+        }
+        return expression;
+    }
     private void ParseAction(List<CompilingError> errors, List<ASTNode> actionList) //Parsea el Action de Effect, parece ser que hay que darle de parametro un objeto especifico para que almacene expresiones de AST
     {
         while (true) //Recorre mientras hallan instrucciones
@@ -346,16 +406,8 @@ public class Parser
                     errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Invalid, "Bad expression"));
                 }
                 
-                Indexador indexador = ParseIndexer(errors, actionList, exp);
-                if (indexador != null)
-                {
-                    actionList.Add(indexador);
-                }
-                else
-                {
-                    actionList.Add(exp);
-                }
-
+                actionList.Add(exp);
+                
                 if (!Stream.Next(TokenValues.StatementSeparator)) //Verificar ; despues de cada instruccion
                 {
                     errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "; expected"));
@@ -364,7 +416,7 @@ public class Parser
         }  
     }
 
-    private Indexador ParseIndexer(List<CompilingError> errors, List<ASTNode> actionList, Expression expression)
+    private Expression ParseIndexer(List<CompilingError> errors, Expression expression)
     {
         if (expression == null) return null;
 
@@ -386,7 +438,7 @@ public class Parser
             indexador.Right = exp;
             return indexador;
         }
-        return null;
+        return expression;
     }
     private void ParseWhile(List<CompilingError> errors, List<ASTNode> actionList)
     {
@@ -680,10 +732,13 @@ public class Parser
         exp = ParseIdentifier();
         if(exp != null)
         {
+            exp = ParseBracket(compilingErrors, exp);
+            exp = ParseIndexer(compilingErrors, exp);
             return exp;
         }
         return null;
     }
+
     private Expression? ParseConcat1(Expression? left)
     {
         Concat1 concat1 = new Concat1(Stream.LookAhead().Location);

@@ -87,6 +87,7 @@
     <Compile Include="Assets\Prefabs\PrefabsScripts\PrefabUnitCard.cs" />
     <Compile Include="Assets\Scripts\Herencia Card\Card.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms\Number.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\Bracket.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\mul.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\SubIgual.cs" />
     <Compile Include="Assets\Prefabs\PrefabsScripts\PrefabSpecialCard.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Assets\Test.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\MayorQ.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\Predicate.cs" />
     <Compile Include="Assets\Scripts\Effects.cs" />
     <Compile Include="Assets\Scripts\Compilador\Parser\Parser.cs" />
     <Compile Include="Assets\Scripts\Herencia Card\Special_Card.cs" />

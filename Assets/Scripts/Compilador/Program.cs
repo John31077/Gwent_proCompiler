@@ -28,23 +28,22 @@ public class Programa
 		TokenStream stream = new TokenStream(tokens);
 		Parser parser = new Parser(stream);
 
-		//aqui se mete en perro canal. hace todo un arbol raro. evalua elementos, cartas y expresiones super turbias
 		List<CompilingError> errors = new List<CompilingError>();
 
 		ElementalProgram program = parser.ParseProgram(errors);
 
-
-
-
-			if (errors.Count > 0)
+		foreach (CompilingError error in Parser.compilingErrors)
+		{
+			errors.Add(error);
+		}
+		if (errors.Count > 0)
+		{
+			foreach (CompilingError error in errors)
 			{
-				foreach (CompilingError error in errors)
-				{
-					Console.WriteLine("{0}, {1}, {2}", error.Location.Line, error.Code, error.Argument);
-					Debug.Log(error.Location.Line + " " + error.Code + " " + error.Argument);
-				}
-			
-			}
+				Console.WriteLine("{0}, {1}, {2}", error.Location.Line, error.Code, error.Argument);
+				Debug.Log(error.Location.Line + " " + error.Code + " " + error.Argument);
+			}	
+		}
 
 
 
