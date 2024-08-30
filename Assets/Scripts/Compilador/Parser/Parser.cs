@@ -150,7 +150,7 @@ public class Parser
         {
             errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "OpenCurlyBraces Expected"));
         }
-        
+
         if (Stream.LookAhead(1).Value != TokenValues.ClosedCurlyBraces) // Si no hay } parsea Action
         {
             ParseAction(errors, effect.ActionList);
@@ -170,7 +170,7 @@ public class Parser
             }
         }
         
-        Debug.Log(errors.Count);
+        
         /*Expression? exp = ParseExpression();   //Esto es para las expresiones
         if (exp != null)
         {
@@ -376,7 +376,13 @@ public class Parser
     {
         while (true) //Recorre mientras hallan instrucciones
         {
-            if (!Stream.Next()) break;  //Si se acaba la lista de tokens, rompe el ciclo
+           /* if (!Stream.Next()) 
+            {
+                Debug.Log("Se acaba");
+                break;  //Si se acaba la lista de tokens, rompe el ciclo
+            }*/
+
+            if (Stream.End) break;
 
             if (Stream.Next(TokenValues.While)) //Parsea instrucciones while
             {
@@ -400,12 +406,13 @@ public class Parser
             }
             else // si no es un while o un for , entonces es una expresiom
             {
-                Expression? exp = ParseExpression(); 
+                Expression? exp = ParseExpression();
+                
                 if(exp == null)
                 {
                     errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Invalid, "Bad expression"));
                 }
-                
+               
                 actionList.Add(exp);
                 
                 if (!Stream.Next(TokenValues.StatementSeparator)) //Verificar ; despues de cada instruccion
@@ -466,9 +473,10 @@ public class Parser
             Stream.MoveNext(1);
 
             ParseAction(errors, While.ActionList);
+            Stream.MoveBack(1);
 
             if (!Stream.Next(TokenValues.ClosedCurlyBraces))
-            {
+            {   
                 errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "} expected"));
             }
 
@@ -511,6 +519,7 @@ public class Parser
             Stream.MoveNext(1);
 
             ParseAction(errors, @for.ActionList);
+            Stream.MoveBack(1);
 
             if (!Stream.Next(TokenValues.ClosedCurlyBraces))
             {
@@ -522,6 +531,7 @@ public class Parser
         }
         else //Si es distinto, parsea una instruccion
         {
+        Debug.Log(Stream.LookAhead().Value + "sadasdasdasd");
             Expression? exp1 = ParseExpression(); 
             if(exp1 == null)
             {
@@ -736,7 +746,7 @@ public class Parser
             exp = ParseIndexer(compilingErrors, exp);
             return exp;
         }
-        return null;
+        return left;
     }
 
     private Expression? ParseConcat1(Expression? left)

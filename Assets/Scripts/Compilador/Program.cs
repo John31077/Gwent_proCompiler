@@ -15,10 +15,11 @@ public class Programa
 
 
 		IEnumerable<Token> tokens = lexical.GetTokens("code", text, new List<CompilingError>()); //Crea un enumerable de tokens
-
+		int a = 0;
 		foreach (Token token in tokens) //recorre la lista de tokens recien creada e imprime cada token
 		{
-    		Debug.Log(token);
+    		Debug.Log(token + " "  + a);
+			a++;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
