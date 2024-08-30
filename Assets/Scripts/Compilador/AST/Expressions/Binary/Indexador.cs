@@ -8,7 +8,7 @@ public class Indexador : BinaryExpression
 
     public Indexador(CodeLocation location) : base(location)
     {
-        
+        Type = ExpressionType.Anytype;
     }
 
     

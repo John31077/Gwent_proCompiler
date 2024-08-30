@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\Herencia Card\Card.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms\Number.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\mul.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\SubIgual.cs" />
     <Compile Include="Assets\Prefabs\PrefabsScripts\PrefabSpecialCard.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\Concat1.cs" />
     <Compile Include="Assets\Scripts\Listas y Utiles\CartaBaseSola.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Assets\Scripts\Herencia Card\Weather_Card.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\div.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms\Bool.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\AddIgual.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\While.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\DotNotation.cs" />

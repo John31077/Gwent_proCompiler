@@ -309,33 +309,85 @@ public class Parser
 
 
         //Ver bien esta parte
-    }
+    }*/
 
-*/
+
     private void ParseAction(List<CompilingError> errors, List<ASTNode> actionList) //Parsea el Action de Effect, parece ser que hay que darle de parametro un objeto especifico para que almacene expresiones de AST
     {
-        //Estas cosas por lo visto deben estar en un while
-        while (true)
+        while (true) //Recorre mientras hallan instrucciones
         {
-            if (Stream.Next(TokenValues.While))
+            if (!Stream.Next()) break;  //Si se acaba la lista de tokens, rompe el ciclo
+
+            if (Stream.Next(TokenValues.While)) //Parsea instrucciones while
             {
                 ParseWhile(errors, actionList);
+                if (!Stream.Next(TokenValues.StatementSeparator)) //Verificar ; despues de cada instruccion
+                {
+                    errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "; expected"));
+                }
             }
-            else if (Stream.Next(TokenValues.For))
+            else if (Stream.Next(TokenValues.For)) //Parsea instrucciones for
             {
                 ParseFor(errors, actionList);
+                if (!Stream.Next(TokenValues.StatementSeparator)) //Verificar ; despues de cada instruccion
+                {
+                    errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "; expected"));
+                }
             }
-            else if (Stream.Next(TokenValues.ClosedCurlyBraces))   // si no es un while o un for , entonces es una expresiom, recordar que no esta implementado el indexer
+            else if (Stream.Next(TokenValues.ClosedCurlyBraces))   //Si se encuentra una } entonces se acaba el ciclo
             {
                 break;
             }
-        }
-        
+            else // si no es un while o un for , entonces es una expresiom
+            {
+                Expression? exp = ParseExpression(); 
+                if(exp == null)
+                {
+                    errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Invalid, "Bad expression"));
+                }
+                
+                Indexador indexador = ParseIndexer(errors, actionList, exp);
+                if (indexador != null)
+                {
+                    actionList.Add(indexador);
+                }
+                else
+                {
+                    actionList.Add(exp);
+                }
+
+                if (!Stream.Next(TokenValues.StatementSeparator)) //Verificar ; despues de cada instruccion
+                {
+                    errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "; expected"));
+                }
+            }
+        }  
     }
 
+    private Indexador ParseIndexer(List<CompilingError> errors, List<ASTNode> actionList, Expression expression)
+    {
+        if (expression == null) return null;
 
+        if (Stream.LookAhead(1).Value == TokenValues.OpenCorchetes)
+        {
+            Stream.MoveNext(1);
 
-
+            Expression? exp = ParseExpression(); 
+            if(exp == null)
+            {
+                errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Invalid, "Bad expression in indexer"));
+            }
+            if (!Stream.Next(TokenValues.ClosedCorchetes))
+            {
+                errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "] expected"));
+            }
+            Indexador indexador = new Indexador(Stream.LookAhead().Location);
+            indexador.Left = expression;
+            indexador.Right = exp;
+            return indexador;
+        }
+        return null;
+    }
     private void ParseWhile(List<CompilingError> errors, List<ASTNode> actionList)
     {
         While While = new While(null, Stream.LookAhead().Location);
@@ -482,9 +534,6 @@ public class Parser
         }
     }
 
-
-
-
     private Expression? ParseExpression() //prioridad igual
     {
         return ParseExpressionLv0(null);
@@ -530,7 +579,6 @@ public class Parser
         Expression? newLeft = ParseExpressionLv2(left);
         return ParseExpressionLv1_(newLeft);
         //return exp;
-
     }
 
     private Expression? ParseExpressionLv1_(Expression? left)
@@ -541,6 +589,16 @@ public class Parser
             return exp;
         }
         exp = ParseSub(left);
+        if(exp != null)
+        {
+            return exp;
+        }
+        exp = ParseConcat1(left);
+        if(exp != null)
+        {
+            return exp;
+        }
+        exp = ParseConcat2(left);
         if(exp != null)
         {
             return exp;
@@ -573,8 +631,6 @@ public class Parser
         return left;
     }
 
-    
-    
     private Expression? ParseExpressionLv0(Expression? left)
     {
         Expression? newLeft = ParseExpressionLv05(left);
@@ -593,6 +649,16 @@ public class Parser
             return exp;
         }
         exp = Assign(left);
+        if(exp != null)
+        {
+            return exp;
+        }
+        exp = ParseAddIgual(left);
+        if(exp != null)
+        {
+            return exp;
+        }
+        exp = ParseSubIgual(left);
         if(exp != null)
         {
             return exp;
@@ -617,6 +683,44 @@ public class Parser
             return exp;
         }
         return null;
+    }
+    private Expression? ParseConcat1(Expression? left)
+    {
+        Concat1 concat1 = new Concat1(Stream.LookAhead().Location);
+
+        if (left == null || !Stream.Next(TokenValues.Concat))
+            return null;
+        
+        concat1.Left = left;
+
+        Expression? right = ParseExpressionLv2(null);
+        if(right == null)
+        {
+            Stream.MoveBack(2);
+            return null;
+        }
+        concat1.Right = right;
+
+        return ParseExpressionLv1_(concat1);
+    }
+    private Expression? ParseConcat2(Expression? left)
+    {
+        Concat2 concat2 = new Concat2(Stream.LookAhead().Location);
+
+        if (left == null || !Stream.Next(TokenValues.Concat))
+            return null;
+        
+        concat2.Left = left;
+
+        Expression? right = ParseExpressionLv2(null);
+        if(right == null)
+        {
+            Stream.MoveBack(2);
+            return null;
+        }
+        concat2.Right = right;
+
+        return ParseExpressionLv1_(concat2);
     }
     private Expression? ParseAdd(Expression? left)
     {
@@ -717,6 +821,8 @@ public class Parser
 
         return ParseExpressionLv1_(dotNotation);
     }
+
+    
 
     private Expression? MenorQ(Expression? left)
     {
@@ -862,6 +968,42 @@ public class Parser
         assign.Right = right;
 
         return ParseExpressionLv0_(assign);
+    }
+    private Expression? ParseAddIgual(Expression? left)
+    {
+        AddIgual addIgual = new AddIgual(Stream.LookAhead().Location);
+        if (left == null || !Stream.Next(TokenValues.Sub))
+        {
+            return null;
+        }
+        addIgual.Left = left;
+        Expression? right = ParseExpressionLv05(null);
+        if(right == null)
+        {
+            Stream.MoveBack(2);
+            return null;
+        }
+        addIgual.Right = right;
+
+        return ParseExpressionLv0_(addIgual);
+    }
+    private Expression? ParseSubIgual(Expression? left)
+    {
+        SubIgual subIgual = new SubIgual(Stream.LookAhead().Location);
+        if (left == null || !Stream.Next(TokenValues.Sub))
+        {
+            return null;
+        }
+        subIgual.Left = left;
+        Expression? right = ParseExpressionLv05(null);
+        if(right == null)
+        {
+            Stream.MoveBack(2);
+            return null;
+        }
+        subIgual.Right = right;
+
+        return ParseExpressionLv0_(subIgual);
     }
     private Expression? ParseNumber()
     {
