@@ -95,6 +95,7 @@
     <Compile Include="Assets\Scripts\Listas y Utiles\CartaBaseSola.cs" />
     <Compile Include="Assets\Scripts\DictionaryEffects.cs" />
     <Compile Include="Assets\Test.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\PorIgual.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\MayorQ.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\Predicate.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Assets\Scripts\Listas y Utiles\MetodosUtiles.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\And Or.cs" />
     <Compile Include="Assets\Prefabs\PrefabsScripts\PrefabLeaderCard.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\DivIgual.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Effects.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms\StringC.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\ValueTypeG.cs" />

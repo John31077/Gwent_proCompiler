@@ -10,15 +10,15 @@ public class Compiling //Esto por lo visto si lo invocas con .Lexical basicament
                 __LexicalProcess = new LexicalAnalyzer();
 
                 __LexicalProcess.RegisterOperator("+", TokenValues.Add); // +
-                __LexicalProcess.RegisterOperator("+=", TokenValues.Add); // +=
+                __LexicalProcess.RegisterOperator("+=", TokenValues.MasIgual); // +=
                 __LexicalProcess.RegisterOperator("++", TokenValues.Add); // ++
                 __LexicalProcess.RegisterOperator("*", TokenValues.Mul); // *
-                __LexicalProcess.RegisterOperator("*=", TokenValues.Mul); // *=
+                __LexicalProcess.RegisterOperator("*=", TokenValues.PorIgual); // *=
                 __LexicalProcess.RegisterOperator("-", TokenValues.Sub); // -
-                __LexicalProcess.RegisterOperator("-=", TokenValues.Sub); // -=
+                __LexicalProcess.RegisterOperator("-=", TokenValues.MenosIgual); // -=
                 __LexicalProcess.RegisterOperator("/", TokenValues.Div); // /
-                __LexicalProcess.RegisterOperator("/=", TokenValues.Div); // /=
-                __LexicalProcess.RegisterOperator("^", TokenValues.Pow); // ^
+                __LexicalProcess.RegisterOperator("/=", TokenValues.DivIgual); // /=
+                //__LexicalProcess.RegisterOperator("^", TokenValues.Pow); // ^
 
                 __LexicalProcess.RegisterOperator("=", TokenValues.Assign); // =
                 __LexicalProcess.RegisterOperator("=>", TokenValues.Implica); // =>
@@ -75,11 +75,11 @@ public class Compiling //Esto por lo visto si lo invocas con .Lexical basicament
                 __LexicalProcess.RegisterOperator("Pop", TokenValues.Pop); // Pop
                 __LexicalProcess.RegisterOperator("Remove", TokenValues.Remove); // Remove
                 __LexicalProcess.RegisterOperator("Shuffle", TokenValues.Shuffle); // Shuffle
+                __LexicalProcess.RegisterOperator("Power", TokenValues.Power); // Power
 
                 __LexicalProcess.RegisterKeyword("card", TokenValues.card); // card
                 __LexicalProcess.RegisterKeyword("Type", TokenValues.Type); // Type
                 __LexicalProcess.RegisterKeyword("Faction", TokenValues.Faction); // Faction
-                __LexicalProcess.RegisterKeyword("Power", TokenValues.Power); // Power
                 __LexicalProcess.RegisterKeyword("Range", TokenValues.Range); // Range
                 __LexicalProcess.RegisterKeyword("OnActivation", TokenValues.OnActivation); // OnActivation
                 __LexicalProcess.RegisterKeyword("Effect", TokenValues.Effect); // Effect
@@ -89,8 +89,8 @@ public class Compiling //Esto por lo visto si lo invocas con .Lexical basicament
                 __LexicalProcess.RegisterKeyword("Predicate", TokenValues.Predicate); // Predicate
                 __LexicalProcess.RegisterKeyword("PostAction", TokenValues.PostAction); // PostAction
 
-                __LexicalProcess.RegisterKeyword("true", TokenValues.TrueExpresion); // true
-                __LexicalProcess.RegisterKeyword("false", TokenValues.FalseExpresion); // false
+                __LexicalProcess.RegisterOperator("true", TokenValues.TrueExpresion); // true
+                __LexicalProcess.RegisterOperator("false", TokenValues.FalseExpresion); // false
                 
                 __LexicalProcess.RegisterKeyword("for", TokenValues.For); // for
                 __LexicalProcess.RegisterKeyword("in", TokenValues.In); // in

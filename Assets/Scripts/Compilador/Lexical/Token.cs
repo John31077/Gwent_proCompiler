@@ -53,6 +53,10 @@ public class TokenValues //Clase donde se encuentran los valores de los tokens (
     public const string MenorQue = "MenorQue"; // <
     public const string MayorIgual = "MayorIgual"; // >=
     public const string MenorIgual = "MenorIgual"; // <=
+    public const string MasIgual = "MasIgual"; // +=
+    public const string MenosIgual = "MenosIgual"; // -=
+    public const string PorIgual = "PorIgual"; // *=
+    public const string DivIgual = "DivIgual"; // /=
     public const string Igual = "Igual"; // ==
     public const string Concat = "Concat"; // @
     public const string ConcatEspacio = "ConcatEspacio"; // @@

@@ -1,21 +1,67 @@
 effect {
-	Name: "Draw",
-	Params: {
-		Amount: Number
-	},
-	Action: (targets, context) => {
-		topCard = context.Deck.Pop;
-		wtf = 1+6*5;
-		Console.WriteLine;
-		while (1+2) {
-			1+1;
-			wtf = Console;
-			for target in targets
+			Name: "Damage" ,
+			Params: 
 			{
-				i + 2 == 45;
-			    tronco = 1+1;
-			};
-	};
-		pe = gato + 1;
-	}
-}
+				Amount: Number
+			},
+			Action: (targets, context) => 
+			{
+				1(
+			}
+		}
+
+
+		effect {
+			Name: "Damageeeeee" ,
+			Params: 
+			{
+				Amount: Number
+			},
+			Action: (targets, context) => 
+			{
+				target.Hand.Find((perro) => 5+5)[5].Power = target.Hand[1+1].Find(perro);
+			}
+		}
+
+
+
+
+		effect {
+				Name: "Damage" ,
+				Params: {
+					Amount: Number
+				},
+				Action: (targets, context) => {
+					for target in targets {
+						i = 0;
+						while (i < Amount)
+						{
+						target -= 1;
+						};
+					};
+				}
+			}
+
+
+			effect {
+				Name: "Draw",
+				Action: (targets, context) => {
+					topCard = context.Deck.Pop();
+					context.Hand.Add(topCard);
+					context.Hand.Shuffle();
+				}
+			}
+
+
+			effect {
+				Name: "ReturnToDeck",
+				Action: (targets, context) => {
+					for target in targets {
+						owner = target.owner;
+						deck = context.DeckOfPlayer(owner);
+						deck.Push(target);
+						deck.Shuffle();
+						context.Board.Remove(target);
+					};
+				}
+			}

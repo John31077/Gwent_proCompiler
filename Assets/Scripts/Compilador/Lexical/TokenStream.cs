@@ -8,6 +8,7 @@ public class TokenStream : IEnumerable<Token>
     private List<Token> tokens;
     private int position;
     public int Position { get { return position; } }
+    public int Count { get { return tokens.Count; } }
 
     public TokenStream(IEnumerable<Token> tokens)
     {
