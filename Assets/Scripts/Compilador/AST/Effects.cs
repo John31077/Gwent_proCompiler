@@ -17,14 +17,14 @@ public class Effect : ASTNode
 
     public bool CollectElements(Context context, Scope scope, List<CompilingError> errors)
     {
-        if (context.elements.Contains(Id))
+        if (context.effects.Contains(Id))
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Effect already defined"));
             return false;
         }
         else
         {
-            context.elements.Add(Id);
+            context.effects.Add(Id);
         }
         return true;
     }
@@ -32,9 +32,34 @@ public class Effect : ASTNode
     
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
-        return true; //borrar
-        
-       /* bool checkWeak = true;
+        return true;
+            bool checkInstructions = false;
+            foreach (ASTNode instruction in ActionList)
+            {
+                instruction.CheckSemantic(context, scope, errors);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*bool checkWeak = true;
         foreach (string element in Weak)
         {
             if (!context.elements.Contains(element))

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 public class Context
 {
-    public List<string> elements;
+    public List<string> effects;
     public List<string> cards;
 
     public Context()
     {
-        elements = new List<string>();
+        effects = new List<string>();
         cards = new List<string>();
     }
 }
