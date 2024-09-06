@@ -7,7 +7,10 @@ public class PostAction : ASTNode
     
 
 
-
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
 
     public PostAction(CodeLocation location) : base (location)
     {

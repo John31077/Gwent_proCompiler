@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class MayorIgual : BinaryExpression
 {
@@ -8,6 +9,12 @@ public class MayorIgual : BinaryExpression
     {
 
     }
+
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
+    
     public MayorIgual(CodeLocation location) : base(location){}
     public override string ToString()
     {

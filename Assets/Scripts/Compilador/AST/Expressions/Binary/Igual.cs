@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class Igual : BinaryExpression
 {
@@ -9,6 +10,12 @@ public class Igual : BinaryExpression
 
     }
     public Igual(CodeLocation location) : base(location){}
+
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
+    
     public override string ToString()
     {
         if (Value == null)

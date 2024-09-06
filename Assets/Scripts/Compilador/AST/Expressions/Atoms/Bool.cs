@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class Bool : AtomExpression
 {
@@ -14,6 +15,11 @@ public class Bool : AtomExpression
     public Bool(string value, CodeLocation location) : base(location)
     {
         Value = value;
+    }
+
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
     }
 
     public override ExpressionType Type

@@ -6,7 +6,10 @@ public class EffectOnActivation : ASTNode
     public List<ParametroValor> ParamsList;
 
 
-
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
 
     public EffectOnActivation(CodeLocation location) : base (location)
     {

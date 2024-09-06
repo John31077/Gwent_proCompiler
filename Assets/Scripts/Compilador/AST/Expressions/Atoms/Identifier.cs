@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class Identifier : AtomExpression
 {
@@ -19,10 +20,10 @@ public class Identifier : AtomExpression
         Value = value;
     }
     
-    /*public override bool CheckSemantic(Context context, Scope table, List<CompilingError> errors)
+    public override bool CheckSemantic(Context context, Scope table, List<CompilingError> errors)
     {
         return true;
-    }*/
+    }
 
     public override void Evaluate()
     {

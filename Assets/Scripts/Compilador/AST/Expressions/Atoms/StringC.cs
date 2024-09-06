@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class StringC : AtomExpression
 {
@@ -19,10 +20,10 @@ public class StringC : AtomExpression
         Value = value;
     }
     
-    /*public override bool CheckSemantic(Context context, Scope table, List<CompilingError> errors)
+    public override bool CheckSemantic(Context context, Scope table, List<CompilingError> errors)
     {
         return true;
-    }*/
+    }
 
     public override void Evaluate()
     {

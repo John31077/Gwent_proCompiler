@@ -9,4 +9,9 @@ public class While : ASTNode
     {
         ActionList = new List<ASTNode>();
     }
+
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
 }

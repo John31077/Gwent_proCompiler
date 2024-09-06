@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class MayorQ : BinaryExpression
 {
@@ -8,6 +9,12 @@ public class MayorQ : BinaryExpression
     {
 
     }
+
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
+    
     public MayorQ(CodeLocation location) : base(location){}
     public override string ToString()
     {

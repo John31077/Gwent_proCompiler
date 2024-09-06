@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class Div : BinaryExpression
 {
@@ -15,9 +16,10 @@ public class Div : BinaryExpression
         Value = (double)Right.Value / (double)Left.Value;
     }
 
-    /*public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
-        bool right = Right.CheckSemantic(context, scope, errors);
+        return true; // Borrar
+        /*bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
         if (Right.Type != ExpressionType.Number || Left.Type != ExpressionType.Number)
         {
@@ -27,8 +29,8 @@ public class Div : BinaryExpression
         }
 
         Type = ExpressionType.Number;
-        return right && left;
-    }*/
+        return right && left;*/
+    }
 
     public override string ToString()
     {

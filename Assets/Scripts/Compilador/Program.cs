@@ -45,6 +45,21 @@ public class Programa
 				Debug.Log(error.Location.Line + " " + error.Code + " " + error.Argument);
 			}	
 		}
+		else
+		{
+			Context context = new Context();
+     		Scope scope = new Scope();
+
+			program.CheckSemantic(context, scope, errors);
+
+			if (errors.Count > 0)
+     		{
+         		foreach (CompilingError error in errors)
+         		{
+            		Console.WriteLine("{0}, {1}, {2}", error.Location.Line, error.Code, error.Argument);
+         		}
+     		}
+		}
 
 		
 

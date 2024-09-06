@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class And : BinaryExpression
 {
@@ -9,6 +10,11 @@ public class And : BinaryExpression
     public And(CodeLocation location) : base(location)
     {
 
+    }
+
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
     }
 
     
@@ -36,6 +42,11 @@ public class Or : BinaryExpression
     public Or(CodeLocation location) : base(location)
     {
 
+    }
+
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
     }
 
     public override string ToString()

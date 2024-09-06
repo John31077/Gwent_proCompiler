@@ -1,5 +1,6 @@
 using System;
- 
+using System.Collections.Generic;
+
 public class Predicate : BinaryExpression
 {
     public override ExpressionType Type {get; set;}
@@ -7,6 +8,10 @@ public class Predicate : BinaryExpression
 
     public Predicate(CodeLocation location) : base(location){}
 
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
     public override void Evaluate()
     {
         Type = ExpressionType.Anytype;

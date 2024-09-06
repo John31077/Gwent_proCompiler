@@ -6,7 +6,10 @@ public class SelectorOnActivation : ASTNode
     public Expression Single;
     public Predicate Predicate;
     
-
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
 
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class Add : BinaryExpression
 {
@@ -13,6 +14,11 @@ public class Add : BinaryExpression
         Left.Evaluate();
         
         Value = (double)Right.Value + (double)Left.Value;
+    }
+
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
     }
 
      /* We check semantics for the Right and Left Expressions. Both must be numerical types

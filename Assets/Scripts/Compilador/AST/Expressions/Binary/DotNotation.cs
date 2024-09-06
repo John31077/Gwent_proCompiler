@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 public class DotNotation : BinaryExpression
 {
     public override ExpressionType Type { get; set; }
@@ -10,6 +11,10 @@ public class DotNotation : BinaryExpression
         Type = ExpressionType.Anytype;
     }
 
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    {
+        return true;
+    }
     
     public override string ToString()
     {

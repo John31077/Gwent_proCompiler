@@ -16,28 +16,28 @@ public class ElementalProgram : ASTNode
         Cards = new Dictionary<string, CardG>();
     }
     
-    /* To check a program semantic we sould first collect all the existing elements and store them in the context.
-    Then, we check semantics of elements and cards */
-    /*public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
+    /* To check a program semantic we sould first collect all the existing effects and store them in the context.
+    Then, we check semantics of effects and cards */
+    public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
-        bool checkElements = true;
-        foreach (Element element in Elements.Values)
+        bool checkEffects = true;
+        foreach (Effect effect in Effects.Values)
         {
-            checkElements = checkElements && element.CollectElements(context, scope.CreateChild(), errors);
+            checkEffects = checkEffects && effect.CollectElements(context, scope.CreateChild(), errors);
         }
-        foreach (Element element in Elements.Values)
+        foreach (Effect effect in Effects.Values)
         {
-            checkElements = checkElements && element.CheckSemantic(context, scope.CreateChild(), errors);
+            checkEffects = checkEffects && effect.CheckSemantic(context, scope.CreateChild(), errors);
         }
 
         bool checkCards = true;
-        foreach (Card card in Cards.Values)
+        foreach (CardG card in Cards.Values)
         {
             checkCards = checkCards && card.CheckSemantic(context, scope, errors);
         }
 
-        return checkCards && checkElements;
-    }*/
+        return checkCards && checkEffects;
+    }
 
     /*public void Evaluate()
     {
