@@ -83,6 +83,7 @@ public class Compiling //Esto por lo visto si lo invocas con .Lexical basicament
                 __LexicalProcess.RegisterKeyword("Range", TokenValues.Range); // Range
                 __LexicalProcess.RegisterKeyword("OnActivation", TokenValues.OnActivation); // OnActivation
                 __LexicalProcess.RegisterKeyword("Effect", TokenValues.Effect); // Effect
+               // __LexicalProcess.RegisterKeyword("Amount", TokenValues.Amount); // Amount
                 __LexicalProcess.RegisterKeyword("Selector", TokenValues.Selector); // Selector
                 __LexicalProcess.RegisterKeyword("Source", TokenValues.Source); // Source
                 __LexicalProcess.RegisterKeyword("Single", TokenValues.Single); // Single

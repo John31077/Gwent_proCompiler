@@ -1,8 +1,7 @@
 using System;
 
-public class Identifier : AtomExpression
+public class Keyword : AtomExpression
 {
-
     public override ExpressionType Type
     {
         get
@@ -14,7 +13,7 @@ public class Identifier : AtomExpression
 
     public override object? Value { get; set; }
     
-    public Identifier(string value, CodeLocation location) : base(location)
+    public Keyword(string value, CodeLocation location) : base(location)
     {
         Value = value;
     }

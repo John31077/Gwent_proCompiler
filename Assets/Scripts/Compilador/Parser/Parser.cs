@@ -9,6 +9,8 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.Assertions.Must;
+using UnityEngine.UIElements;
 
 public class Parser
 {
@@ -41,7 +43,7 @@ public class Parser
         }
 
         //Here we parse all the declared cards
-       /* while (Stream.LookAhead().Value == TokenValues.card)
+        while (Stream.LookAhead().Value == TokenValues.card)
         {
             CardG card = ParseCard(errors);
             program.Cards[card.Id] = card;
@@ -51,7 +53,6 @@ public class Parser
                 break;
             }
         }
-        */
        return program;
     }
 
@@ -180,7 +181,7 @@ public class Parser
         return effect;                           
     }
 
-    /*public CardG ParseCard(List<CompilingError> errors)
+    public CardG ParseCard(List<CompilingError> errors)
     {
         CardG card = new CardG(null, "null", null, null, null, Stream.LookAhead().Location);
 
@@ -225,6 +226,27 @@ public class Parser
             errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "Text Expected"));
         }
         card.Id = Stream.LookAhead().Value;
+
+        if (!Stream.Next(TokenValues.ValueSeparator)) // ,
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ", Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.Faction)) // Faction
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "Faction Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.TwoPoints)) // :
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "TwoPoints Expected"));
+        }
+
+        if (!Stream.Next(TokenType.Text)) // Text
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "Text Expected"));
+        }
+        card.faction = Stream.LookAhead().Value;
 
         if (!Stream.Next(TokenValues.ValueSeparator)) // ,
         {
@@ -277,9 +299,14 @@ public class Parser
         }
         card.range = Stream.LookAhead().Value;
 
-        if (!Stream.Next(TokenValues.OpenCorchetes)) // ]
+        if (!Stream.Next(TokenValues.ClosedCorchetes)) // ]
         {
-            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "TwoPoints Expected"));
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "] Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.ValueSeparator)) // ,
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ", Expected"));
         }
 
         if (!Stream.Next(TokenValues.OnActivation)) // OnActivation
@@ -297,38 +324,282 @@ public class Parser
             errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "[ Expected"));
         }
 
-        if (Stream.LookAhead(1).Value == TokenValues.ClosedCorchetes)
+        if (Stream.LookAhead(1).Value == TokenValues.ClosedCorchetes) //Si tiene un ] entonces se entiende como que no tiene OnActivation
         {
             return card;
         }
 
+        ParseOnActivation(errors, card.OnActivation);
 
+        if (!Stream.Next(TokenValues.ClosedCorchetes)) // ]
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "] Expected"));
+        }  
 
-        
+        if (!Stream.Next(TokenValues.ClosedCurlyBraces)) // }
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "} Expected"));
+        }        
 
-
-
-
-
-
-        //Ver bien esta parte
+        return card;
     }
 
-
-
-    private Expression ParseOnActivation(List<CompilingError> errors)
+    private void ParseOnActivation(List<CompilingError> errors, List<ASTNode> onActList) //En este caso la lista es de carta
     {
         while (Stream.Position < Stream.Count)
         {
+            if (!Stream.Next(TokenValues.OpenCurlyBraces)) // {
+            {
+                errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "{ Expected"));
+            }
 
+            bool effect = ParseEffectOnActivation(errors,onActList);
+
+            if (effect)
+            {
+                if (!Stream.Next(TokenValues.ValueSeparator)) // ,
+                {
+                    errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ", Expected"));
+                }
+
+                if (Stream.LookAhead(1).Value == TokenValues.Selector)
+                {
+                    ParseSelector(errors, onActList);
+                }
+
+                if (!Stream.Next(TokenValues.ValueSeparator)) // ,
+                {
+                    errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ", Expected"));
+                }
+             
+                if (Stream.LookAhead(1).Value == TokenValues.PostAction)
+                {
+                    ParsePostAction(errors, onActList);
+                }
+
+                if (!Stream.Next(TokenValues.ClosedCurlyBraces)) // }
+                {
+                    errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "} Expected"));
+                }
+
+                if (Stream.Next(TokenValues.ValueSeparator)) // si despues hay una coma, vuelve a hacer el ciclo
+                {
+                    continue;
+                }
+                else break;
+                
+            }
+            else Stream.MoveNext(1);
         }
-    }*/
+    }
 
+    private void ParsePostAction(List<CompilingError> errors, List<ASTNode> OnActList)
+    {
+        PostAction postAction = new PostAction(Stream.LookAhead().Location);
+        Stream.MoveNext(1); //Debe estar parado en PostAction
 
+        if (!Stream.Next(TokenValues.TwoPoints)) // :
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ": Expected"));
+        }
 
+        ParseOnActivation(errors, postAction.PostActionList);
+        OnActList.Add(postAction);
+    }
 
+    private void ParseSelector(List<CompilingError> errors, List<ASTNode> OnActList)
+    {
+        SelectorOnActivation selectorOnActivation = new SelectorOnActivation(Stream.LookAhead().Location);
 
+        Stream.MoveNext(1); // Aqui estaria parado en Selector
 
+        if (!Stream.Next(TokenValues.TwoPoints)) // :
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ": Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.OpenCurlyBraces)) // {
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "{ Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.Source)) // Source
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "Source Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.TwoPoints)) // :
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ": Expected"));
+        }
+
+        if (!Stream.Next(TokenType.Text)) // text
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "text Expected"));
+        }
+        
+        selectorOnActivation.Source = Stream.LookAhead().Value;
+
+        if (!Stream.Next(TokenValues.ValueSeparator)) // ,
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ", Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.Single)) // Single
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "Single Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.TwoPoints)) // :
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ": Expected"));
+        }
+
+        Expression expression = ParseExpression();
+        if (expression == null)
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Invalid, "Bad Expression"));
+        }
+
+        selectorOnActivation.Single = expression;
+
+        if (!Stream.Next(TokenValues.ValueSeparator)) // ,
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ", Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.Predicate)) // Predicate
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "Predicate Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.TwoPoints)) // :
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ": Expected"));
+        }
+
+        Predicate predicate = (Predicate)ParsePredicate(compilingErrors);
+
+        selectorOnActivation.Predicate = predicate;
+
+        if (!Stream.Next(TokenValues.ClosedCurlyBraces)) // }
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "} Expected"));
+        }
+
+        OnActList.Add(selectorOnActivation);
+    }
+
+   private bool ParseEffectOnActivation(List<CompilingError> errors, List<ASTNode> OnActList) //En casos correctos, la posicion se retornaria en }
+   {
+        EffectOnActivation effectOnActivation = new EffectOnActivation(Stream.LookAhead().Location);
+        bool isEffect = false;
+
+        Stream.MoveNext(1); //Aqui estaria parado en Effect
+
+        if (!Stream.Next(TokenValues.TwoPoints)) // :
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ": Expected"));
+        }
+    
+        //Azucar sintactica
+        if (Stream.LookAhead(1).Type == TokenType.Text) //Si lo siguiente es un texto entonces se mueve hacia el token
+        {
+            Stream.MoveNext(1);
+            effectOnActivation.Id =  Stream.LookAhead().Value; //se le coloca el texto como nombre al efecto
+
+            isEffect = true;
+            OnActList.Add(effectOnActivation);
+            return isEffect;
+        }
+        
+        if (!Stream.Next(TokenValues.OpenCurlyBraces)) // {
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "{ Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.Name)) // Name
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "Name Expected"));
+        }
+
+        if (!Stream.Next(TokenValues.TwoPoints)) // :
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ": Expected"));
+        }
+
+        if (!Stream.Next(TokenType.Text))
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "text Expected"));
+        }
+        effectOnActivation.Id = Stream.LookAhead().Value;
+
+        //Hasta aqui la posicion en text
+        
+        if (Stream.LookAhead(1).Value == TokenValues.ClosedCurlyBraces) //Si entra aqui se supone que no hay parametros y retorna con la posicion en }
+        {
+            Stream.MoveNext(1);
+            isEffect = true;
+            OnActList.Add(effectOnActivation);
+            return isEffect;
+        }
+
+        if (!Stream.Next(TokenValues.ValueSeparator)) // ,
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, ", Expected"));
+        }
+
+        ParseParamsOnAct(errors, effectOnActivation.ParamsList);
+        
+        OnActList.Add(effectOnActivation);
+        isEffect = true;
+        return isEffect;
+   }
+
+   private void ParseParamsOnAct(List<CompilingError> errors, List<ParametroValor> effectParamList)
+   {
+        while (ParseParametroOnAct(errors, effectParamList))
+        {
+            if (!Stream.Next(TokenValues.ValueSeparator))
+            {
+                if (!Stream.Next(TokenValues.ClosedCurlyBraces)) //aumentar
+                {
+                    errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "ClosedCurlyBraces expected"));
+                    Stream.MoveNext(1);
+                }
+
+                break;
+            }
+        }
+   }
+
+   private bool ParseParametroOnAct(List<CompilingError> errors, List<ParametroValor> effectParamList)
+   {
+        string id;
+        Expression expression;
+        
+        if (!Stream.Next(TokenType.Identifier))
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "Id expected"));
+        }
+        id = Stream.LookAhead().Value; 
+
+        if (!Stream.Next(TokenValues.TwoPoints))
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Expected, "TwoPoints expected"));
+        }
+
+        expression = ParseExpression();
+        if (expression == null)
+        {
+            errors.Add(new CompilingError(Stream.LookAhead().Location, ErrorCode.Invalid, "Bad expression"));
+        }
+
+        ParametroValor parametroValor = new ParametroValor(id, expression);
+        effectParamList.Add(parametroValor);
+
+        return true;
+   }
 
     private Expression ParsePredicate(List<CompilingError> errors)
     {
@@ -770,14 +1041,32 @@ public class Parser
         
         if(exp != null)
         {
+            exp = ParseBracket(compilingErrors, exp);
+            exp = ParseIndexer(compilingErrors, exp);
+            return exp;
+        }
+        exp = ParseBool();
+        if(exp != null)
+        {
+            exp = ParseBracket(compilingErrors, exp);
+            exp = ParseIndexer(compilingErrors, exp);
             return exp;
         }
         exp = ParseText();
         if(exp != null)
         {
+            exp = ParseBracket(compilingErrors, exp);
+            exp = ParseIndexer(compilingErrors, exp);
             return exp;
         }
         exp = ParseIdentifier();
+        if(exp != null)
+        {
+            exp = ParseBracket(compilingErrors, exp);
+            exp = ParseIndexer(compilingErrors, exp);
+            return exp;
+        }
+        exp = ParseIdentifierKeyWord();
         if(exp != null)
         {
             exp = ParseBracket(compilingErrors, exp);
@@ -1162,9 +1451,24 @@ public class Parser
         if (!Stream.Next(TokenType.Identifier)) return null;
         return new Identifier(Stream.LookAhead().Value, Stream.LookAhead().Location);
     }
+    private Expression? ParseIdentifierKeyWord()
+    {
+       /* if (!Stream.Next(TokenValues.Type)||!Stream.Next(TokenValues.Name)||!Stream.Next(TokenValues.Faction)||!Stream.Next(TokenValues.Power)||!Stream.Next(TokenValues.Range)) 
+        return null;*/
+        
+        if (Stream.Next(TokenValues.Type)||Stream.Next(TokenValues.Name)||Stream.Next(TokenValues.Faction)||Stream.Next(TokenValues.Power)||Stream.Next(TokenValues.Range))
+        {
+            return new Keyword(Stream.LookAhead().Value, Stream.LookAhead().Location);
+        }
+
+        return null;
+
+
+        return new Keyword(Stream.LookAhead().Value, Stream.LookAhead().Location);
+    }
     private Expression? ParseBool()
     {
-        if (!Stream.Next(TokenType.Identifier)) return null;
-        return new Identifier(Stream.LookAhead().Value, Stream.LookAhead().Location);
+        if (!Stream.Next(TokenValues.TrueExpresion) || !Stream.Next(TokenValues.FalseExpresion) ) return null;
+        return new Bool(Stream.LookAhead().Value, Stream.LookAhead().Location);
     }
 }

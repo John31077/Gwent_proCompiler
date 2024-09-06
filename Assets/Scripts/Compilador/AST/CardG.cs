@@ -7,7 +7,7 @@ public class CardG : ASTNode
     public string faction {get; set;}
     public Expression Power {get; set;}
     public string range {get; set;}
-    public List<Expression> OnActivation;
+    public List<ASTNode> OnActivation;
 
     public CardG(string cardType, string id, string faction, Expression power, string range, CodeLocation location) : base (location)
     {
@@ -16,7 +16,7 @@ public class CardG : ASTNode
         this.faction = faction;
         this.Power = power;
         this.range = range;
-        OnActivation = new List<Expression>();
+        OnActivation = new List<ASTNode>();
     }
 }
 

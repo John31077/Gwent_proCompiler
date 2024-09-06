@@ -12,6 +12,20 @@ public class Parametro
     }
 }
 
+public class ParametroValor
+{
+    public string Id { get; private set; }
+
+    public Expression Expression { get; private set; }
+
+
+    public ParametroValor(string id, Expression expression)
+    {
+        this.Id = id;
+        this.Expression = expression;
+    }
+}
+
 public enum TypeOfValue
 {
     Bool,

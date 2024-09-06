@@ -1,14 +1,123 @@
 effect {
-			Name: "Damage" ,
-			Params: 
-			{
+		Name: "Damage" ,
+		Params: {
 				Amount: Number
-			},
-			Action: (targets, context) => 
-			{
-				1(
+				},
+				Action: (targets, context) => {
+					for target in targets {
+						i = 0;
+						while (i < Amount)
+						{
+						target -= 1;
+						};
+					};
+				}
+			}
+
+effect {
+		Name: "Draw",
+		Action: (targets, context) => {
+			topCard = context.Deck.Pop();
+			context.Hand.Add(topCard);
+			context.Hand.Shuffle();
 			}
 		}
+
+
+effect {
+		Name: "ReturnToDeck",
+		Action: (targets, context) => {
+		for target in targets {
+		    owner = target.owner;
+			deck = context.DeckOfPlayer(owner);
+			deck.Push(target);
+			deck.Shuffle();
+			context.Board.Remove(target);
+				};
+			}
+		}
+
+
+
+
+
+
+card {
+	Type: "Oro",
+	Name: "Beluga",
+	Faction: "Northern Realms",
+	Power: 10,
+	Range: ["Melee"],
+	OnActivation: [
+		{
+			Effect: {
+				Name: "Damage",
+				Amount : 5,
+				Got : gato,
+				LET : perro
+			},
+			Selector: {
+				Source: "board",
+				Single: false,
+				Predicate: (unit) => unit.Faction.Power[5] == "Northern" @@ "Realms"
+			},
+			PostAction: {
+				Effect:{
+					Name: "ReturnToDeck"
+				},
+				Selector: {
+					Source: "parent",
+					Single: false,
+					Predicate: (unit) => unit.Power < 1
+				},
+			}	
+		},
+		{
+			Effect: "Draw",,
+		}
+	]
+}
+
+card {
+	Type: "Oro",
+	Name: "Racuda",
+	Faction: "Northern Realms",
+	Power: 10,
+	Range: ["Melee"],
+	OnActivation: [
+		{
+			Effect: {
+				Name: "Damage",
+				Amount : 5,
+				Got : gato,
+				LET : perro
+			},
+			Selector: {
+				Source: "board",
+				Single: false,
+				Predicate: (unit) => unit.Faction.Power[5] == "Northern" @@ "Realms"
+			},
+			PostAction: {
+				Effect:{
+					Name: "ReturnToDeck"
+				},
+				Selector: {
+					Source: "parent",
+					Single: false,
+					Predicate: (unit) => unit.Power < 1
+				},
+			}	
+		},
+		{
+			Effect: "Draw",,
+		}
+	]
+}
+
+
+
+
+
 
 
 		effect {

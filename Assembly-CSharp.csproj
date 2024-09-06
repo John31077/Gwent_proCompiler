@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\Compilador\Error\CompilingError.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms.cs" />
     <Compile Include="Assets\Scripts\UpdateMetodos.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\OnAEffect.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\sub.cs" />
     <Compile Include="Assets\Prefabs\PrefabsScripts\PrefabWeatherCard.cs" />
     <Compile Include="Assets\Prefabs\PrefabsScripts\PrefabUnitCard.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Assets\Scripts\Listas y Utiles\UtilesDeInstanciar.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\ASTNode.cs" />
     <Compile Include="Assets\Scripts\Listas y Utiles\ListaBase.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\OnASelector.cs" />
     <Compile Include="Assets\Scripts\OnMouseEnterScript.cs" />
     <Compile Include="Assets\Scripts\Compilador\Context.cs" />
     <Compile Include="Assets\Scripts\Compilador\ExpressionType.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms\StringC.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\ValueTypeG.cs" />
     <Compile Include="Assets\Scripts\Herencia Card\Weather_Card.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\OnAPostAction.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\div.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms\Bool.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\AddIgual.cs" />
@@ -127,6 +130,7 @@
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\DotNotation.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\Concat2.cs" />
     <Compile Include="Assets\Scripts\Compilador\Lexical\Compiling.cs" />
+    <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms\Keyword.cs" />
     <Compile Include="Assets\Scripts\Compilador\Program.cs" />
     <Compile Include="Assets\Scripts\Herencia Card\Leader_Card.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\MenorQ.cs" />

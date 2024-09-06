@@ -122,6 +122,7 @@ public class TokenValues //Clase donde se encuentran los valores de los tokens (
     public const string Range = "Range"; // Range
     public const string OnActivation = "OnActivation"; // OnActivation
     public const string Effect = "Effect"; // Effect
+    //public const string Amount = "Amount"; // Amount
     public const string Selector = "Selector"; // Selector
     public const string Source = "Source"; // Source
     public const string Single = "Single"; // Single

@@ -11,7 +11,7 @@ public class Bool : AtomExpression
         }
     }
 
-    public Bool(bool value, CodeLocation location) : base(location)
+    public Bool(string value, CodeLocation location) : base(location)
     {
         Value = value;
     }
