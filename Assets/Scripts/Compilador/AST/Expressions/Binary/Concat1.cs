@@ -8,7 +8,17 @@ public class Concat1 : BinaryExpression // @
 
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
-        return true;
+        bool right = Right.CheckSemantic(context, scope, errors);
+        bool left = Left.CheckSemantic(context, scope, errors);
+        if ((Right.Type!=ExpressionType.String&&Right.Type!=ExpressionType.Identifier)||(Left.Type!=ExpressionType.String&&Left.Type!=ExpressionType.Identifier))
+        {
+            errors.Add(new CompilingError(Location, ErrorCode.Invalid, "@ must be string or identifier in both sides"));
+            Type = ExpressionType.ErrorType;
+            return false;
+        }
+
+        Type = ExpressionType.Number;
+        return right && left;
     }
     
     public override void Evaluate()

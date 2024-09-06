@@ -16,10 +16,6 @@ public class Add : BinaryExpression
         Value = (double)Right.Value + (double)Left.Value;
     }
 
-     /* We check semantics for the Right and Left Expressions. Both must be numerical types
-     because our little game can only operate over numbers. A good idea could be extend this for
-     add (concat) text types. There you have a homework.
-     Sub, Mul and Div are the same thing. */
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
         bool right = Right.CheckSemantic(context, scope, errors);
