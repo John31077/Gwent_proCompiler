@@ -21,7 +21,7 @@ public class MayorQ : BinaryExpression
             return false;
         }
 
-        Type = ExpressionType.Number;
+        Type = ExpressionType.Bool;
         return right && left;
     }
     

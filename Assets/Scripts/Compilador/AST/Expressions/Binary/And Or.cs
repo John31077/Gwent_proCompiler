@@ -23,7 +23,7 @@ public class And : BinaryExpression
             return false;
         }
 
-        Type = ExpressionType.Number;
+        Type = ExpressionType.Bool;
         return right && left;
     }
 
@@ -65,7 +65,7 @@ public class Or : BinaryExpression
             return false;
         }
 
-        Type = ExpressionType.Number;
+        Type = ExpressionType.Bool;
         return right && left;
     }
 

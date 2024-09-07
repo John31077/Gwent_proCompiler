@@ -22,7 +22,7 @@ public class MenorQ : BinaryExpression
             return false;
         }
 
-        Type = ExpressionType.Number;
+        Type = ExpressionType.Bool;
         return right && left;
     }
     

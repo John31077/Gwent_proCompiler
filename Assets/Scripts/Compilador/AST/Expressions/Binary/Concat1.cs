@@ -17,7 +17,7 @@ public class Concat1 : BinaryExpression // @
             return false;
         }
 
-        Type = ExpressionType.Number;
+        Type = ExpressionType.String;
         return right && left;
     }
     
