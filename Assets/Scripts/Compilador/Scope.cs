@@ -1,16 +1,14 @@
-/* The scope is used to check if the effect are alredy in use inside
-every Card or Effect declaration. We must create a Scope Child in every case */
 using System.Collections.Generic;
 
 public class Scope
     {
         public Scope? Parent;
 
-        public List<string> effects;
+        public List<string> identifiers;
 
         public Scope()
         {
-            effects = new List<string>();   
+            identifiers = new List<string>();   
         }
 
         public Scope CreateChild()
@@ -19,6 +17,28 @@ public class Scope
             child.Parent = this;
                
             return child;
+        }
+
+        public void AssignIdentifier()
+        {
+
+        }
+
+        //Metodo para verificar si un identificador ya está definido en el scope o su padre o ancestros.
+        public bool IsAssignedIdentifier(string identifier, Scope scope)
+        {
+            if (scope.identifiers.Contains(identifier))
+            {
+                return true;
+            }
+            else
+            {
+                if (scope.Parent == null && !scope.identifiers.Contains(identifier))
+                {
+                    return false;
+                }
+                return IsAssignedIdentifier(identifier, scope.Parent);
+            }
         }
 
     }
