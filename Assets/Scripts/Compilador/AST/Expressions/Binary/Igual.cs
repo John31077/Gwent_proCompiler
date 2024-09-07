@@ -13,7 +13,17 @@ public class Igual : BinaryExpression
 
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
-        return true;
+        bool right = Right.CheckSemantic(context, scope, errors);
+        bool left = Left.CheckSemantic(context, scope, errors);
+        if (Right.Type != Left.Type)
+        {
+            errors.Add(new CompilingError(Location, ErrorCode.Invalid, "diferents expresion types in both sides of =="));
+            Type = ExpressionType.ErrorType;
+            return false;
+        }
+
+        Type = ExpressionType.Bool;
+        return right && left;
     }
     
     public override string ToString()

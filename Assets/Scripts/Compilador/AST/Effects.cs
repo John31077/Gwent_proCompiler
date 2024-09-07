@@ -32,71 +32,22 @@ public class Effect : ASTNode
     
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
-        return true;
-            bool checkInstructions = false;
-            foreach (ASTNode instruction in ActionList)
-            {
-                instruction.CheckSemantic(context, scope, errors);
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*bool checkWeak = true;
-        foreach (string element in Weak)
+        foreach (Parametro parametro in ParamsExpresions)
         {
-            if (!context.elements.Contains(element))
-            {
-                errors.Add(new CompilingError(Location, ErrorCode.Invalid, String.Format("{0} element does not exists", element)));
-                checkWeak = false;
-            }
-            if (scope.elements.Contains(element))
-            {
-                errors.Add(new CompilingError(Location, ErrorCode.Invalid, String.Format("{0} element already in use", element)));
-                checkWeak = false;
-            }
-            else
-            {
-                scope.elements.Add(element);
-            }
+            scope.identifiers.Add(parametro.Id);
         }
 
+        bool checkInstruction = false;
+        bool checkInstructions = true;
 
-        bool checkStrong = true;
-        foreach (string element in Strong)
+        foreach (ASTNode instruction in ActionList)
         {
-            if (!context.elements.Contains(element))
+            checkInstruction = instruction.CheckSemantic(context, scope.CreateChild(), errors);
+            if (checkInstruction == false)
             {
-                errors.Add(new CompilingError(Location, ErrorCode.Invalid, String.Format("{0} element does not exists", element)));
-                checkStrong = false;
-            }
-            if (scope.elements.Contains(element))
-            {
-                errors.Add(new CompilingError(Location, ErrorCode.Invalid, String.Format("{0} element already in use", element)));
-                checkStrong = false;
-            }
-            else
-            {
-                scope.elements.Add(element);
+                checkInstructions = false;
             }
         }
-        return checkWeak && checkStrong;*/
+        return checkInstructions;
     }
 }

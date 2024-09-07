@@ -14,7 +14,17 @@ public class Indexador : BinaryExpression
 
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
-        return true;
+        bool right = Right.CheckSemantic(context, scope, errors);
+        bool left = Left.CheckSemantic(context, scope, errors);
+        if (Right.Type != ExpressionType.Number || Left.Type != ExpressionType.Identifier)
+        {
+            errors.Add(new CompilingError(Location, ErrorCode.Invalid, "invalid indexer"));
+            Type = ExpressionType.ErrorType;
+            return false;
+        }
+
+        Type = ExpressionType.Identifier;
+        return right && left;
     }
     
     public override string ToString()
