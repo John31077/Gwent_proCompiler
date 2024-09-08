@@ -21,7 +21,7 @@ public class Igual : BinaryExpression
             Type = ExpressionType.ErrorType;
             return false;
         }
-
+        
         Type = ExpressionType.Bool;
         return right && left;
     }

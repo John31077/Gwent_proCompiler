@@ -4,12 +4,13 @@ public class Scope
     {
         public Scope? Parent;
 
-        public List<string> identifiers;
+        public Dictionary<string, Expression> varYValores;
 
         public Scope()
         {
-            identifiers = new List<string>();   
+            varYValores = new Dictionary<string, Expression>();
         }
+
 
         public Scope CreateChild()
         {
@@ -19,21 +20,17 @@ public class Scope
             return child;
         }
 
-        public void AssignIdentifier()
-        {
 
-        }
-
-        //Metodo para verificar si un identificador ya está definido en el scope o su padre o ancestros.
+        //Metodo para verificar si un identificador ya está definido en el scope o en su padre o ancestros.
         public bool IsAssignedIdentifier(string identifier, Scope scope)
         {
-            if (scope.identifiers.Contains(identifier))
+            if (scope.varYValores.ContainsKey(identifier))
             {
                 return true;
             }
             else
             {
-                if (scope.Parent == null && !scope.identifiers.Contains(identifier))
+                if (scope.Parent == null && !scope.varYValores.ContainsKey(identifier))
                 {
                     return false;
                 }

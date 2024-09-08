@@ -1,5 +1,5 @@
-/* Our context stores the declared elements and cards.
-This project doesn't collect and check the cards existence.*/
+/* Our context stores the declared effects and cards.
+Doesn't collect and check the cards existence for now.*/
 using System.Collections.Generic;
 
 public class Context

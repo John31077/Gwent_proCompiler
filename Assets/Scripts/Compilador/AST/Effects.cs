@@ -34,14 +34,28 @@ public class Effect : ASTNode
     {
         foreach (Parametro parametro in ParamsExpresions)
         {
-            scope.identifiers.Add(parametro.Id);
+            scope.varYValores.Add(parametro.Id, null);
         }
+
+
 
         bool checkInstruction = false;
         bool checkInstructions = true;
 
         foreach (ASTNode instruction in ActionList)
         {
+            if (!(instruction is Assign)||!(instruction is AddIgual)||!(instruction is SubIgual)||!(instruction is PorIgual||!(instruction is DivIgual)))
+            {
+                if (!(instruction is While)||!(instruction is For))
+                {
+                    errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Invalid instruction"));
+                    checkInstructions = false;
+                    continue;
+                }
+            }
+
+
+
             checkInstruction = instruction.CheckSemantic(context, scope.CreateChild(), errors);
             if (checkInstruction == false)
             {
