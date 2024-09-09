@@ -20,7 +20,7 @@ public class DotNotation : BinaryExpression
     {
         if (Value == null)
         {
-            return String.Format("{0}.{1}", Left, Right);
+            return String.Format("<{0}.{1}>", Left, Right);
         }
         return Value.ToString();
     }

@@ -16,14 +16,14 @@ public class Indexador : BinaryExpression
     {
         bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
-        if (Right.Type != ExpressionType.Number || Left.Type != ExpressionType.Identifier)
+        if (Right.Type != ExpressionType.Number || Left.Type != ExpressionType.List)
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "invalid indexer"));
             Type = ExpressionType.ErrorType;
             return false;
         }
 
-        Type = ExpressionType.Identifier;
+        Type = ExpressionType.Card;
         return right && left;
     }
     
@@ -31,7 +31,7 @@ public class Indexador : BinaryExpression
     {
         if (Value == null)
         {
-            return String.Format("{0}[{1}]", Left, Right);
+            return String.Format("<{0}[{1}]>", Left, Right);
         }
         return Value.ToString();
     }

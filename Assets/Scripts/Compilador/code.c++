@@ -174,3 +174,24 @@ card {
 					};
 				}
 			}
+
+
+effect {
+		Name: "Damage" ,
+		Params: {
+				Amount: Number
+				},
+				Action: (targets, context) => {
+					for target in targets {
+						i = 0;
+						while (i < Amount)
+						{
+						perro.Hand.Push()[5];
+						perro.Hand.Gato[1];
+						perro.Hand.TopCard(gato)[5];
+						perro.Hand.Lagarto;
+						context.Hand[4].Power;
+						};
+					};
+				}
+			}

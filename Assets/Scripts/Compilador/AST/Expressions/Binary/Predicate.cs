@@ -12,7 +12,7 @@ public class Predicate : BinaryExpression
     {
         bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
-        if (Left.Type != ExpressionType.Identifier || Right.Type == ExpressionType.ErrorType)
+        if (Left.Type != ExpressionType.Card || Right.Type == ExpressionType.ErrorType)
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Invalid predicate"));
             Type = ExpressionType.ErrorType;

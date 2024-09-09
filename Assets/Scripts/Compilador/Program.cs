@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class Programa
 {
+	public static bool IsFirstAssign = false;
+
 	public static void Main(string code)
 	{
 		LexicalAnalyzer lexical = Compiling.Lexical;
@@ -47,11 +50,13 @@ public class Programa
 		}
 		else
 		{
+			return;
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//Chequeo semantico
 			
 			Context context = new Context();
      		Scope scope = new Scope();
+
 
 			program.CheckSemantic(context, scope, errors);
 

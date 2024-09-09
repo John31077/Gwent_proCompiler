@@ -10,7 +10,7 @@ public class Concat1 : BinaryExpression // @
     {
         bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
-        if ((Right.Type!=ExpressionType.String&&Right.Type!=ExpressionType.Identifier)||(Left.Type!=ExpressionType.String&&Left.Type!=ExpressionType.Identifier))
+        if (Right.Type!=ExpressionType.String || Left.Type!=ExpressionType.String)
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "@ must be string or identifier in both sides"));
             Type = ExpressionType.ErrorType;

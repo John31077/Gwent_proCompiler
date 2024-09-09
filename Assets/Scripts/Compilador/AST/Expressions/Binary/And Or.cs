@@ -16,7 +16,7 @@ public class And : BinaryExpression
     {
         bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
-        if ((Right.Type!=ExpressionType.Bool&&Right.Type!=ExpressionType.Identifier)||(Left.Type!=ExpressionType.Bool&&Left.Type!=ExpressionType.Identifier))
+        if (Right.Type!=ExpressionType.Bool || Left.Type!=ExpressionType.Bool)
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "&& must be bool or identifier in both sides"));
             Type = ExpressionType.ErrorType;

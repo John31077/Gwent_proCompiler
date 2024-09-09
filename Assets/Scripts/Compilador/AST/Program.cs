@@ -54,10 +54,10 @@ public class ElementalProgram : ASTNode
         {
             s = s + "\n" + effect.ToString();
         }
-        /*foreach (Card card in Cards.Values)
+        foreach (CardG card in Cards.Values)
         {
             s += "\n" + card.ToString();
-        }*/
+        }
         return s;
     }
 }

@@ -14,7 +14,7 @@ public class MayorIgual : BinaryExpression
     {
         bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
-        if ((Right.Type!=ExpressionType.Number&&Right.Type!=ExpressionType.Identifier)||(Left.Type!=ExpressionType.Number&&Left.Type!=ExpressionType.Identifier))
+        if (Right.Type!=ExpressionType.Number || Left.Type!=ExpressionType.Number)
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, ">= must be number or identifier in both sides"));
             Type = ExpressionType.ErrorType;

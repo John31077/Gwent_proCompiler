@@ -645,7 +645,6 @@ public class Parser
         {
             Stream.MoveNext(1);
 
-           // List<CompilingError> errorsPredicate = new List<CompilingError>();
             Bracket bracket = new Bracket(Stream.LookAhead().Location);
             Expression exp = ParseExpression();
             if (exp == null)
@@ -704,7 +703,7 @@ public class Parser
             else // si no es un while o un for , entonces es una expresiom
             {
                 Expression? exp = ParseExpression();
-                
+               Debug.Log(exp.ToString());
                 if(exp == null)
                 {
                     Stream.MoveNext(1);
@@ -1452,19 +1451,13 @@ public class Parser
         return new Identifier(Stream.LookAhead().Value, Stream.LookAhead().Location);
     }
     private Expression? ParseIdentifierKeyWord()
-    {
-       /* if (!Stream.Next(TokenValues.Type)||!Stream.Next(TokenValues.Name)||!Stream.Next(TokenValues.Faction)||!Stream.Next(TokenValues.Power)||!Stream.Next(TokenValues.Range)) 
-        return null;*/
-        
+    {   
         if (Stream.Next(TokenValues.Type)||Stream.Next(TokenValues.Name)||Stream.Next(TokenValues.Faction)||Stream.Next(TokenValues.Power)||Stream.Next(TokenValues.Range))
         {
             return new Keyword(Stream.LookAhead().Value, Stream.LookAhead().Location);
         }
 
         return null;
-
-
-        return new Keyword(Stream.LookAhead().Value, Stream.LookAhead().Location);
     }
     private Expression? ParseBool()
     {

@@ -3,6 +3,14 @@ using System.Collections.Generic;
 
 public class Bool : AtomExpression
 {
+    public override ExpressionType Type
+    {
+        get
+        {
+            return ExpressionType.Bool;
+        }
+        set { }
+    }
     public bool IsBool
     {
         get
@@ -22,14 +30,6 @@ public class Bool : AtomExpression
         return true;
     }
 
-    public override ExpressionType Type
-    {
-        get
-        {
-            return ExpressionType.Bool;
-        }
-        set { }
-    }
 
 
     public override void Evaluate()
