@@ -28,7 +28,6 @@ public class Bracket : BinaryExpression
             if (Left.Value == IdentifierType.Pop.ToString() || Left.Value == IdentifierType.Shuffle.ToString())
             {
                 left = true;
-                
             }
             else
             {
@@ -48,8 +47,9 @@ public class Bracket : BinaryExpression
                 errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Bad method declaration, Find(Predicate)"));
                 Type = ExpressionType.ErrorType;
                 return false;
-                
             }
+
+            Type = ExpressionType.List;
 
             left = true;
             return right && left;
@@ -67,6 +67,8 @@ public class Bracket : BinaryExpression
                 return false;
             }
 
+            Type = ExpressionType.List;
+
             return right && left;
         }
         else if (Left.Value==IdentifierType.Push.ToString()||Left.Value==IdentifierType.Remove.ToString()||
@@ -82,6 +84,7 @@ public class Bracket : BinaryExpression
                 return false;
             }
 
+            Type = ExpressionType.Method;
             return right && left;
         }
         else

@@ -8,6 +8,8 @@ public enum ExpressionType
     Card,
     List,
     Method,
+    Property,
+    Context,
     Player,
     ErrorType
 }

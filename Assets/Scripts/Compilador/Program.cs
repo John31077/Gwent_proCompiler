@@ -44,7 +44,6 @@ public class Programa
 		{
 			foreach (CompilingError error in errors)
 			{
-				Console.WriteLine("{0}, {1}, {2}", error.Location.Line, error.Code, error.Argument);
 				Debug.Log(error.Location.Line + " " + error.Code + " " + error.Argument);
 			}	
 		}
