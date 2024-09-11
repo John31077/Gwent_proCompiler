@@ -11,6 +11,7 @@ public enum ExpressionType
     Property,
     Context,
     Player,
+    ContextList,
     ErrorType
 }
 

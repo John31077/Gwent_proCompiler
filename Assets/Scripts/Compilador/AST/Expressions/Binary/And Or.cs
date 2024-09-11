@@ -16,6 +16,27 @@ public class And : BinaryExpression
     {
         bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
+
+        if (Left is Identifier)
+        {
+            Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Left.Value.ToString(), scope);
+            if (tuple.Item1)
+            {
+                Expression expression = tuple.Item2.varYValores[Left.Value.ToString()];
+                Left.Type = expression.Type;
+            }
+        }
+
+        if (Right is Identifier)
+        {
+            Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Right.Value.ToString(), scope);
+            if (tuple.Item1)
+            {
+                Expression expression = tuple.Item2.varYValores[Right.Value.ToString()];
+                Left.Type = expression.Type;
+            }
+        }
+        
         if (Right.Type!=ExpressionType.Bool || Left.Type!=ExpressionType.Bool)
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "&& must be bool or identifier in both sides"));

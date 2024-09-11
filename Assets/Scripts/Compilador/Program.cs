@@ -35,6 +35,8 @@ public class Programa
 		List<CompilingError> errors = new List<CompilingError>();
 
 		ElementalProgram program = parser.ParseProgram(errors);
+		Dictionarys.effects = program.Effects;
+		Dictionarys.cards = program.Cards;
 
 		foreach (CompilingError error in Parser.compilingErrors)
 		{
@@ -49,7 +51,6 @@ public class Programa
 		}
 		else
 		{
-			return;
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//Chequeo semantico
 			

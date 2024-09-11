@@ -15,6 +15,27 @@ public class Igual : BinaryExpression
     {
         bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
+
+        if (Left is Identifier)
+        {
+            Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Left.Value.ToString(), scope);
+            if (tuple.Item1)
+            {
+                Expression expression = tuple.Item2.varYValores[Left.Value.ToString()];
+                Left.Type = expression.Type;
+            }
+        }
+
+        if (Right is Identifier)
+        {
+            Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Right.Value.ToString(), scope);
+            if (tuple.Item1)
+            {
+                Expression expression = tuple.Item2.varYValores[Right.Value.ToString()];
+                Left.Type = expression.Type;
+            }
+        }
+        
         if (Right.Type != Left.Type)
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "diferents expresion types in both sides of =="));

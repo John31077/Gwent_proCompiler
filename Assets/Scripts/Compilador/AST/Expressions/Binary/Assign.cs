@@ -44,6 +44,20 @@ public class Assign : BinaryExpression
             }
         }
 
+
+        if (Left is Identifier)
+        {
+            Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Left.Value.ToString(), scope);
+            if (tuple.Item1)
+            {
+                tuple.Item2.varYValores[Left.Value.ToString()] = Right;
+            }
+            else
+            {
+                scope.varYValores[Left.Value.ToString()] = Right;
+            }
+        }
+
         Type = ExpressionType.Anytype;
         return right && left;
     }

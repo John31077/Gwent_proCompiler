@@ -37,7 +37,7 @@ public class CardG : ASTNode
 
 
         //Verificar el ataque, en caso de ser clima, aumento o lider
-        bool checkPower = false;
+        bool checkPower = Power.CheckSemantic(context, scope, errors);
         if (Power.Type == ExpressionType.Number)
         {
             checkPower = true;
@@ -51,44 +51,21 @@ public class CardG : ASTNode
         }
         else errors.Add(new CompilingError(Location, ErrorCode.Invalid, "The Ranged must be Melee, Ranged or Siege"));
 
+        
+        bool checkInstruction = false;
+        bool checkInstructions = true;
 
-
-
-
-
-
-
-        return true; //Borrar
-
-
-
-
-
-
-
-
-        /* Then we check each card element and send error if this element doesn't exixts or
-        was already used. Finally, we add the element to the scope to say that it has been used */
-        /*bool checkElements = true;
-        foreach (string element in cardElements)
+        foreach (ASTNode instruction in OnActivation)
         {
-            if (!context.elements.Contains(element))
+            checkInstruction = instruction.CheckSemantic(context, scope.CreateChild(), errors);
+            if (checkInstruction == false)
             {
-                errors.Add(new CompilingError(Location, ErrorCode.Invalid, String.Format("{0} element Does not exists", element)));
-                checkElements = false;
-            }
-            if (scope.elements.Contains(element))
-            {
-                errors.Add(new CompilingError(Location, ErrorCode.Invalid, String.Format("{0} element already in use", element)));
-                checkElements = false;
-            }
-            else
-            {
-                scope.elements.Add(element);
+                checkInstructions = false;
             }
         }
 
-        return checkPower && checkElements;*/
+
+        return checkType && checkFaction && checkPower && checkRange && checkInstructions;
     }
 }
 

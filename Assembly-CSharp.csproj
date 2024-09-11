@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Listas y Utiles\ListaBaseConGObject.cs" />
     <Compile Include="Assets\Scripts\Compilador\Lexical\TokenStream.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\CardG.cs" />
+    <Compile Include="Assets\Scripts\Compilador\Dictionarys.cs" />
     <Compile Include="Assets\Scripts\Compilador\Lexical\LexicalAnalyzer.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Program.cs" />
     <Compile Include="Assets\Scripts\ClaseJugador.cs" />

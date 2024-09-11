@@ -38,7 +38,6 @@ public class Effect : ASTNode
         }
 
 
-
         bool checkInstruction = false;
         bool checkInstructions = true;
 
@@ -53,8 +52,6 @@ public class Effect : ASTNode
                     continue;
                 }
             }
-
-
 
             checkInstruction = instruction.CheckSemantic(context, scope.CreateChild(), errors);
             if (checkInstruction == false)

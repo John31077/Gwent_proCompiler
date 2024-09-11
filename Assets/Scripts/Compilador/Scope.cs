@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Scope
     {
@@ -22,17 +24,19 @@ public class Scope
 
 
         //Metodo para verificar si un identificador ya está definido en el scope o en su padre o ancestros.
-        public bool IsAssignedIdentifier(string identifier, Scope scope)
+        public Tuple<bool,Scope> IsAssignedIdentifier(string identifier, Scope scope)
         {
             if (scope.varYValores.ContainsKey(identifier))
             {
-                return true;
+                Tuple<bool, Scope> tuple = new Tuple<bool, Scope>(true, this);
+                return tuple;
             }
             else
             {
                 if (scope.Parent == null && !scope.varYValores.ContainsKey(identifier))
                 {
-                    return false;
+                    Tuple<bool, Scope> tuple = new Tuple<bool, Scope>(false, this);
+                    return tuple;
                 }
                 return IsAssignedIdentifier(identifier, scope.Parent);
             }

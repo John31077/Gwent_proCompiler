@@ -42,6 +42,16 @@ public class Bracket : BinaryExpression
         {
             right = Right.CheckSemantic(context, scope, errors);
 
+            if (Right is Identifier)
+            {
+                Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Right.Value.ToString(), scope);
+                if (tuple.Item1)
+                {
+                    Expression expression = tuple.Item2.varYValores[Right.Value.ToString()];
+                    Left.Type = expression.Type;
+                }
+            }
+
             if (Right.Type != ExpressionType.Bool || Left.Value != IdentifierType.Find.ToString())
             {
                 errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Bad method declaration, Find(Predicate)"));
@@ -60,6 +70,16 @@ public class Bracket : BinaryExpression
             right = Right.CheckSemantic(context, scope, errors);   
             left = true;     
 
+            if (Right is Identifier)
+            {
+                Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Right.Value.ToString(), scope);
+                if (tuple.Item1)
+                {
+                    Expression expression = tuple.Item2.varYValores[Right.Value.ToString()];
+                    Left.Type = expression.Type;
+                }
+            }
+
             if (Right.Type != ExpressionType.Player)
             {
                 errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Bad method declaration, param must be a player"));
@@ -76,6 +96,16 @@ public class Bracket : BinaryExpression
         {
             right = Right.CheckSemantic(context, scope, errors);
             left = true;
+
+            if (Right is Identifier)
+            {
+                Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Right.Value.ToString(), scope);
+                if (tuple.Item1)
+                {
+                    Expression expression = tuple.Item2.varYValores[Right.Value.ToString()];
+                    Left.Type = expression.Type;
+                }
+            }
 
             if (Right.Type != ExpressionType.Card)
             {

@@ -13,9 +13,18 @@ public class DotNotation : BinaryExpression
 
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
-        //Falta despues del dotnotation que venga un metodo, que seria un bracket, en la izquierda seria una lista o una carta en dependencia
         bool right = CheckSemantic(context, scope, errors);
         bool left = CheckSemantic(context, scope, errors);
+
+        if (Left is Identifier)
+        {
+            Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Left.Value.ToString(), scope);
+            if (tuple.Item1)
+            {
+                Expression expression = tuple.Item2.varYValores[Left.Value.ToString()];
+                Left.Type = expression.Type;
+            }
+        }
 
         if (Right.Value == IdentifierType.Power.ToString()||Right.Value == IdentifierType.Name.ToString()||
             Right.Value == IdentifierType.Type.ToString()||Right.Value == IdentifierType.Faction.ToString()||
@@ -80,7 +89,46 @@ public class DotNotation : BinaryExpression
             Type = ExpressionType.Player;
             return left && right;
         }
-        
+        else if (Right.Type == ExpressionType.Method)
+        {
+            if (Left.Type != ExpressionType.List)
+            {
+                errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Left expression must be a list"));
+                Type = ExpressionType.ErrorType;
+                return false;
+            }
+
+            Type = ExpressionType.Method;
+            return right && left;
+        }
+        else if (Right.Type == ExpressionType.List)
+        {
+            if (Right is Bracket)
+            {
+                Bracket bracket = (Bracket)Right;
+                if (bracket.Right is Predicate)
+                {
+                    if (Left.Type != ExpressionType.List)
+                    {
+                        errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Left expression must be a list"));
+                        Type = ExpressionType.ErrorType;
+                        return false;
+                    }
+                    Type = ExpressionType.List;
+                    return right && left;
+                }
+
+                if (Left.Type != ExpressionType.Context)
+                {
+                    errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Left expression must be a context"));
+                    Type = ExpressionType.ErrorType;
+                    return false;
+                }
+
+                Type = ExpressionType.ContextList;
+                return right && left;
+            }
+        }
         return false;
     }
     
