@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class SelectorOnActivation : ASTNode
 {
@@ -9,13 +10,14 @@ public class SelectorOnActivation : ASTNode
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)
     {
         bool checkSource = false;
-        if (Source=="hand"||Source=="otherHand"||Source=="deck"||Source=="otherDeck"||Source=="field"||Source=="otherField"||Source=="parent")
+        if (Source=="board"||Source=="hand"||Source=="otherHand"||Source=="deck"||Source=="otherDeck"||Source=="field"||Source=="otherField"||Source=="parent")
         {
             checkSource = true;
         }
-        else errors.Add(new CompilingError(Location, ErrorCode.Invalid, "The source must be deck, otherDeck, hand, field, otherHand and otherField"));
+        else errors.Add(new CompilingError(Location, ErrorCode.Invalid, "The source must be board, deck, otherDeck, hand, field, otherHand and otherField"));
 
         bool checkSingle = Single.CheckSemantic(context, scope, errors);
+        
         if (Single.Type != ExpressionType.Bool)
         {
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "The single must be bool"));

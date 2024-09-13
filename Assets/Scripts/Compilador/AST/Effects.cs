@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using Unity.VisualScripting;
 using Debug = UnityEngine.Debug;
 
 public class Effect : ASTNode
@@ -36,7 +37,14 @@ public class Effect : ASTNode
     {
         foreach (Parametro parametro in ParamsExpresions)
         {
-            scope.varYValores.Add(parametro.Id, null);
+
+            if (parametro.typeOfValue == TypeOfValue.Number)
+            scope.varYValores.Add(parametro.Id, new Number(0, new CodeLocation()));
+            else if (parametro.typeOfValue == TypeOfValue.String)
+            scope.varYValores.Add(parametro.Id, new StringC("", new CodeLocation()));
+            else if (parametro.typeOfValue == TypeOfValue.Bool)
+            scope.varYValores.Add(parametro.Id, new Bool("false", new CodeLocation()));
+            else errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Invalid parameter value"));
         }
 
 

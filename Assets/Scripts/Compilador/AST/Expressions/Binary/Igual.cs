@@ -38,6 +38,7 @@ public class Igual : BinaryExpression
         
         if (Right.Type != Left.Type)
         {
+            UnityEngine.Debug.Log(Left.Type + " dddddddddddddddddddddddddddddddd  " + Right.Type);
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "diferents expresion types in both sides of =="));
             Type = ExpressionType.ErrorType;
             return false;

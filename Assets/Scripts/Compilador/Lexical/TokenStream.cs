@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 /* This stream has functions to operate over a list of tokens.
 The methods are simple, you can understand them easily  "flujo de tokens"*/

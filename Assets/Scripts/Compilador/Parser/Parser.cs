@@ -1057,14 +1057,14 @@ public class Parser
             exp = ParseIndexer(compilingErrors, exp);
             return exp;
         }
-        exp = ParseIdentifier();
+        exp = ParseIdentifierKeyWord();
         if(exp != null)
         {
             exp = ParseBracket(compilingErrors, exp);
             exp = ParseIndexer(compilingErrors, exp);
             return exp;
         }
-        exp = ParseIdentifierKeyWord();
+        exp = ParseIdentifier();
         if(exp != null)
         {
             exp = ParseBracket(compilingErrors, exp);

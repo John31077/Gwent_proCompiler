@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 
@@ -14,7 +15,7 @@ public class EffectOnActivation : ASTNode
 
         if (!context.effects.Contains(Id))
         {
-            errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Effect are not previously defined"));
+            errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Effect (" + Id + ") are not previously defined"));
             return false;
         }
 
@@ -36,10 +37,11 @@ public class EffectOnActivation : ASTNode
             return false;
         }
 
+
         for (int i = 0; i < ParamsList.Count; i++)
         {
             TypeOfValue paramsType = effect.ParamsExpresions[i].typeOfValue;
-            checkParamsExpression = CheckSemantic(context, scope, errors);
+            checkParamsExpression = ParamsList[i].Expression.CheckSemantic(context, scope, errors);
             
             if (paramsType == TypeOfValue.Bool)
             {

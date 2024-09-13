@@ -57,6 +57,93 @@ effect {
 
 
 
+
+effect {
+		Name: "Damage" ,
+		Params: {
+				Amount: Number
+				},
+				Action: (targets, context) => {
+					for target in targets {
+						i = 0;
+						a = 5;
+						while (i < Amount)
+						{
+						target.Power -= 1;
+						};
+					};
+				}
+			}
+
+
+
+
+card {
+	Type: "Plata",
+	Name: "Warrior",
+	Faction: "Empire",
+	Power: 5,
+	Range: ["Melee"],
+	OnActivation: [
+		{
+			Effect: {
+				Name: "Damage",
+				Amount : 5
+			},
+			Selector: {
+				Source: "board",
+				Single: false,
+				Predicate: (unit) => unit.Faction == "Empire"
+			},
+			PostAction: {
+				Effect:{
+					Name: "ReturnToDeck"
+				},
+				Selector: {
+					Source: "parent",
+					Single: false,
+					Predicate: (unit) => unit.Power < 1
+				},
+			}	
+		},
+		{
+			Effect: "Draw",,
+		}
+	]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 card {
 	Type: "Oro",
 	Name: "Beluga",

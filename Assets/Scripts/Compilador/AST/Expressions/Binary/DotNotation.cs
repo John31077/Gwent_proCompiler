@@ -17,6 +17,7 @@ public class DotNotation : BinaryExpression
     {
         bool right = Right.CheckSemantic(context, scope, errors);
         bool left = Left.CheckSemantic(context, scope, errors);
+
         
         
         if (Left is Identifier && !ListOfIdentifiers.IdentifiersList.Contains(Left.Value.ToString()))
@@ -28,10 +29,10 @@ public class DotNotation : BinaryExpression
                 Left.Type = expression.Type;
             }
         }
-    
 
-        if ((Right is Identifier) && (Right.Value.ToString()==IdentifierType.Power.ToString()||Right.Value.ToString()==IdentifierType.Name.ToString()||
-            Right.Value.ToString()==IdentifierType.Type.ToString()||Right.Value==IdentifierType.Faction.ToString()||
+
+        if ((Right is Keyword) && (Right.Value.ToString()==IdentifierType.Power.ToString()||Right.Value.ToString()==IdentifierType.Name.ToString()||
+            Right.Value.ToString()==IdentifierType.Type.ToString()||Right.Value.ToString()==IdentifierType.Faction.ToString()||
             Right.Value.ToString()==IdentifierType.Range.ToString()))
         {
             if (Left.Type != ExpressionType.Card)
@@ -41,11 +42,14 @@ public class DotNotation : BinaryExpression
                 return false;
             }
 
-            if ((Right is Identifier) && (Right.Value.ToString() == IdentifierType.Power.ToString()))
+            if ((Right is Keyword) && (Right.Value.ToString() == IdentifierType.Power.ToString()))
             {
                 Type = ExpressionType.Number;
             }
-            else Type = ExpressionType.Property;
+            else 
+            {
+                Type = ExpressionType.String;
+            }
 
             return left && right;
         }
