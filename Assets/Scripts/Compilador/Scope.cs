@@ -28,7 +28,7 @@ public class Scope
         {
             if (scope.varYValores.ContainsKey(identifier))
             {
-                Tuple<bool, Scope> tuple = new Tuple<bool, Scope>(true, this);
+                Tuple<bool, Scope> tuple = new Tuple<bool, Scope>(true, scope);
                 return tuple;
             }
             else

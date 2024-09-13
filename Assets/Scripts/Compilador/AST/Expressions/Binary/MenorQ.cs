@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class MenorQ : BinaryExpression
 {
@@ -32,12 +33,13 @@ public class MenorQ : BinaryExpression
             if (tuple.Item1)
             {
                 Expression expression = tuple.Item2.varYValores[Right.Value.ToString()];
-                Left.Type = expression.Type;
+                Right.Type = expression.Type;
             }
         }
         
         if (Right.Type!=ExpressionType.Number || Left.Type!=ExpressionType.Number)
         {
+            UnityEngine.Debug.Log(Left.Type + " y " + Right.Type);
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "< must be number or identifier in both sides"));
             Type = ExpressionType.ErrorType;
             return false;

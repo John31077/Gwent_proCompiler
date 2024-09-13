@@ -703,7 +703,6 @@ public class Parser
             else // si no es un while o un for , entonces es una expresiom
             {
                 Expression? exp = ParseExpression();
-               Debug.Log(exp.ToString());
                 if(exp == null)
                 {
                     Stream.MoveNext(1);

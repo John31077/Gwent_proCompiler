@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public enum ExpressionType
 {
     Anytype,
@@ -41,4 +43,9 @@ public enum IdentifierType
     Power,
     Range
 
+}
+public class ListOfIdentifiers
+{
+    public static List<string> IdentifiersList = new List<string>(){"Power","Name","Type","Faction","Range","TriggerPlayer","Board","Hand",
+                                                                    "Deck","Field","Graveyard","Owner"};
 }

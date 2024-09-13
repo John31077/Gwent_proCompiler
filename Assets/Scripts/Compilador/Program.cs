@@ -27,7 +27,6 @@ public class Programa
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Parsing
-		Debug.Log("Parser");
 
 		TokenStream stream = new TokenStream(tokens);
 		Parser parser = new Parser(stream);
@@ -51,9 +50,9 @@ public class Programa
 		}
 		else
 		{
+			Debug.Log("Parser");
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//Chequeo semantico
-			
 			Context context = new Context();
      		Scope scope = new Scope();
 
@@ -67,6 +66,10 @@ public class Programa
             		Debug.Log(error.Location.Line + ", " + error.Code + ", " + error.Argument);
          		}
      		}
+			else
+			{
+				Debug.Log("Chequeo semantico");
+			}
 		}
 
 		

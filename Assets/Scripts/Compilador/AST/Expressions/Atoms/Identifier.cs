@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class Identifier : AtomExpression
 {
-
+    private ExpressionType type = ExpressionType.Identifier;
     public override ExpressionType Type
     {
         get
         {
-            return ExpressionType.Identifier;
+            return type;
         }
-        set { }
+        set {type = value; }
     }
 
     public override object? Value { get; set; }
@@ -22,6 +23,14 @@ public class Identifier : AtomExpression
     
     public override bool CheckSemantic(Context context, Scope table, List<CompilingError> errors)
     {
+        if (this.Value.ToString() == "target")
+        {
+            Type = ExpressionType.Card;
+        }
+        else if (this.Value.ToString() == "context")
+        {
+            Type = ExpressionType.Context;
+        }
         return true;
     }
 

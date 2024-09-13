@@ -20,12 +20,12 @@ public class Bracket : BinaryExpression
     {
         bool right;
         bool left;
-
         if (Right == null)
         {
             right = true;
 
-            if (Left.Value == IdentifierType.Pop.ToString() || Left.Value == IdentifierType.Shuffle.ToString())
+
+            if (Left.Value.ToString() == IdentifierType.Pop.ToString() || Left.Value.ToString() == IdentifierType.Shuffle.ToString())
             {
                 left = true;
             }
@@ -42,7 +42,7 @@ public class Bracket : BinaryExpression
         {
             right = Right.CheckSemantic(context, scope, errors);
 
-            if (Right is Identifier)
+            if (Right is Identifier && !ListOfIdentifiers.IdentifiersList.Contains(Right.Value.ToString()))
             {
                 Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Right.Value.ToString(), scope);
                 if (tuple.Item1)
@@ -52,7 +52,7 @@ public class Bracket : BinaryExpression
                 }
             }
 
-            if (Right.Type != ExpressionType.Bool || Left.Value != IdentifierType.Find.ToString())
+            if (Right.Type != ExpressionType.Bool || ((Left is Identifier) && Left.Value.ToString() != IdentifierType.Find.ToString()))
             {
                 errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Bad method declaration, Find(Predicate)"));
                 Type = ExpressionType.ErrorType;
@@ -64,19 +64,19 @@ public class Bracket : BinaryExpression
             left = true;
             return right && left;
         }
-        else if (Left.Value==IdentifierType.DeckOfPlayer.ToString()||Left.Value==IdentifierType.FieldOfPlayer.ToString()||
-                 Left.Value==IdentifierType.HandOfPlayer.ToString()||Left.Value==IdentifierType.GraveyardOfPlayer.ToString())
+        else if ((Left is Identifier) && (Left.Value.ToString()==IdentifierType.DeckOfPlayer.ToString()||Left.Value.ToString()==IdentifierType.FieldOfPlayer.ToString()||
+                 Left.Value.ToString()==IdentifierType.HandOfPlayer.ToString()||Left.Value.ToString()==IdentifierType.GraveyardOfPlayer.ToString()))
         {
             right = Right.CheckSemantic(context, scope, errors);   
             left = true;     
 
-            if (Right is Identifier)
+            if (Right is Identifier && !ListOfIdentifiers.IdentifiersList.Contains(Right.Value.ToString()))
             {
                 Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Right.Value.ToString(), scope);
                 if (tuple.Item1)
                 {
                     Expression expression = tuple.Item2.varYValores[Right.Value.ToString()];
-                    Left.Type = expression.Type;
+                    Right.Type = expression.Type;
                 }
             }
 
@@ -91,13 +91,13 @@ public class Bracket : BinaryExpression
 
             return right && left;
         }
-        else if (Left.Value==IdentifierType.Push.ToString()||Left.Value==IdentifierType.Remove.ToString()||
-                 Left.Value==IdentifierType.SendBottom.ToString())
+        else if ((Left is Identifier) && (Left.Value.ToString()==IdentifierType.Push.ToString()||Left.Value.ToString()==IdentifierType.Remove.ToString()||
+                 Left.Value.ToString()==IdentifierType.SendBottom.ToString()))
         {
             right = Right.CheckSemantic(context, scope, errors);
             left = true;
 
-            if (Right is Identifier)
+            if (Right is Identifier && !ListOfIdentifiers.IdentifiersList.Contains(Right.Value.ToString()))
             {
                 Tuple<bool, Scope> tuple = scope.IsAssignedIdentifier(Right.Value.ToString(), scope);
                 if (tuple.Item1)

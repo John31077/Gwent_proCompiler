@@ -6,10 +6,25 @@ effect {
 				Action: (targets, context) => {
 					for target in targets {
 						i = 0;
-						while (i < Amount)
+						a = 5;
+						while (i < a)
 						{
-						target -= 1;
+						target.Power -= 1;
 						};
+					};
+				}
+			}
+
+
+			effect {
+		Name: "Damageee" ,
+		Params: {
+				Amount: Number
+				},
+				Action: (targets, context) => {
+					for target in targets {
+						i = 0;
+						owner = target.Owner;
 					};
 				}
 			}
@@ -28,7 +43,7 @@ effect {
 		Name: "ReturnToDeck",
 		Action: (targets, context) => {
 		for target in targets {
-		    owner = target.owner;
+		    owner = target.Owner;
 			deck = context.DeckOfPlayer(owner);
 			deck.Push(target);
 			deck.Shuffle();
