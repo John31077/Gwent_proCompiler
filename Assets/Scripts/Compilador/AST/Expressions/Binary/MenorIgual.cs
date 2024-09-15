@@ -7,7 +7,11 @@ public class MenorIgual : BinaryExpression
     public override object? Value {get; set;}
     public override void Evaluate()
     {
-
+        Right.Evaluate();
+        Left.Evaluate();
+        
+        bool value = (double)Left.Value <= (double)Right.Value;
+        Value = value;
     }
     public MenorIgual(CodeLocation location) : base(location){}
 

@@ -19,5 +19,6 @@ public class DictionaryEffects : MonoBehaviour
         EffectsDictionary.Add("Clear", Effects.Clear);
         EffectsDictionary.Add("Companion", Effects.Companion);
         EffectsDictionary.Add("Sunny", Effects.SunnyEffect);
+        
     }
 }

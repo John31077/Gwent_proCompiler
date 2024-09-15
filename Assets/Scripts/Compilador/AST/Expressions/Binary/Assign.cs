@@ -28,6 +28,8 @@ public class Assign : BinaryExpression
                 scope.varYValores[Left.Value.ToString()] = Right;
             }
 
+            EffectCreation.identifiers.Add(Left.Value.ToString(), Right);
+
             Type = ExpressionType.Anytype;
             return right && left;
         }

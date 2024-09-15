@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.XR;
 
 public class Indexador : BinaryExpression
 {
@@ -60,6 +64,61 @@ public class Indexador : BinaryExpression
 
     public override void Evaluate()
     {
+        Right.Evaluate();
+        Left.Evaluate();
 
+        List<GameObject> list = new List<GameObject>();
+
+        double indexer1 = (double)Right.Value;
+        int indexer = (int)indexer1;
+
+        if (Left is Identifier && !EffectCreation.identifiers.ContainsKey(Left.Value.ToString()))
+        {
+            if (Left.ToString() == "Hand")
+            {
+                string triggerPlayer = EffectCreation.VerificatePlayer();
+
+                if (triggerPlayer == EffectCreation.player1.name) list = EffectCreation.h1;
+                else list = EffectCreation.h2;
+            }
+            else if (Left.ToString() == "Deck")
+            {
+                string triggerPlayer = EffectCreation.VerificatePlayer();
+
+                if (triggerPlayer == EffectCreation.player1.name) list = EffectCreation.deck1;
+                else list = EffectCreation.deck2;
+            }
+            else if (Left.ToString() == "Field")
+            {
+                string triggerPlayer = EffectCreation.VerificatePlayer();
+
+                list = EffectCreation.FieldOfPlayerList(triggerPlayer);
+            }
+            else if (Left.ToString() == "Graveyard")
+            {
+                string triggerPlayer = EffectCreation.VerificatePlayer();
+
+                if (triggerPlayer == EffectCreation.player1.name) list = EffectCreation.g1;
+                else list = EffectCreation.g2;
+            }
+        }
+        else if (Left is Identifier && EffectCreation.identifiers.ContainsKey(Left.Value.ToString()))
+        {
+            EffectCreation.identifiers[Left.Value.ToString()].Evaluate();
+            list = (List<GameObject>)EffectCreation.identifiers[Left.Value.ToString()].Value;
+        }
+        else list = (List<GameObject>)Left.Value;
+
+        if (indexer >= list.Count) 
+        {
+            if (list.Count > 0) indexer = list.Count-1;
+            else UnityEngine.Debug.Log("Indexador fuera de rango de la lista, el indexador debe ser menor que la cantidad de elementos de la lista");
+        }
+        else if (indexer < 0) UnityEngine.Debug.Log("Indexador fuera del rango de la lista, indexador debe ser mayor que 0");
+        else 
+        {
+            GameObject card = list[indexer];
+            Value = card;
+        }
     }
 }

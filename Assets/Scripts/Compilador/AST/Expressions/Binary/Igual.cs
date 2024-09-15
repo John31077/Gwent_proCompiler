@@ -7,7 +7,15 @@ public class Igual : BinaryExpression
     public override object? Value {get; set;}
     public override void Evaluate()
     {
+        Right.Evaluate();
+        Left.Evaluate();
 
+        object right = Right.Value;
+        object left =  Left.Value;
+
+        bool value = right == left;
+        
+        Value = value;
     }
     public Igual(CodeLocation location) : base(location){}
 
@@ -38,7 +46,6 @@ public class Igual : BinaryExpression
         
         if (Right.Type != Left.Type)
         {
-            UnityEngine.Debug.Log(Left.Type + " dddddddddddddddddddddddddddddddd  " + Right.Type);
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "diferents expresion types in both sides of =="));
             Type = ExpressionType.ErrorType;
             return false;

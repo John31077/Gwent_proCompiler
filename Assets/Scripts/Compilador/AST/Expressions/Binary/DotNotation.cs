@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 public class DotNotation : BinaryExpression
 {
@@ -156,6 +158,91 @@ public class DotNotation : BinaryExpression
 
     public override void Evaluate()
     {
+        Left.Evaluate();
+        //Right.Evaluate();
+
+        if ((Left.Value is Identifier) && (Left.Value.ToString() == "context" || EffectCreation.identifiers.ContainsKey(Left.Value.ToString())))
+        {
+            if (EffectCreation.identifiers.ContainsKey(Left.Value.ToString()))
+            {
+                Left.Value = EffectCreation.identifiers[Left.Value.ToString()];
+                Left.Evaluate();
+            }
+
+            if (Right is Identifier)
+            {
+                if (Right.Value.ToString() == "TriggerPlayer")
+                {
+                    string triggerPlayer = EffectCreation.VerificatePlayer();
+                    Value = triggerPlayer;
+                }
+                else if (Right.Value.ToString() == "Board")
+                {
+                    EffectCreation.BoardList();
+                    Value = EffectCreation.board;
+                }
+                else if (Right.Value.ToString() == "Hand")
+                {
+                    List<GameObject> hand = new List<GameObject>();
+                    string triggerPlayer = EffectCreation.VerificatePlayer();
+
+                    if (triggerPlayer == EffectCreation.player1.name) hand = EffectCreation.h1;
+                    else hand = EffectCreation.h2;
+
+                    Value = hand;
+                }
+                else if (Right.Value.ToString() == "Deck")
+                {
+                    List<GameObject> deck = new List<GameObject>();
+                    string triggerPlayer = EffectCreation.VerificatePlayer();
+
+                    if (triggerPlayer == EffectCreation.player1.name) deck = EffectCreation.deck1;
+                    else deck = EffectCreation.deck2;
+
+                    Value = deck;
+                }
+                else if (Right.Value.ToString() == "Field")
+                {
+                    List<GameObject> field = new List<GameObject>();
+                    string triggerPlayer = EffectCreation.VerificatePlayer();
+
+                    field = EffectCreation.FieldOfPlayerList(triggerPlayer);
+
+                    Value = field;
+                }
+                else if (Right.Value.ToString() == "Graveyard")
+                {
+                    List<GameObject> graveyard = new List<GameObject>();
+                    string triggerPlayer = EffectCreation.VerificatePlayer();
+
+                    if (triggerPlayer == EffectCreation.player1.name) graveyard = EffectCreation.g1;
+                    else graveyard = EffectCreation.g2;
+
+                    Value = graveyard;
+                }
+            }
+            else if (Right is Indexador)
+            {
+                
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }

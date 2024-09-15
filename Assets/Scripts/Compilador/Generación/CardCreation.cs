@@ -83,6 +83,15 @@ public class CardCreation : MonoBehaviour
                     card1.transform.SetParent(deckP1.transform);
                 }
             }
+            
+            foreach (ASTNode onActElement in card.OnActivation)
+            {
+                if (onActElement is EffectOnActivation)
+                {
+                    EffectOnActivation effect = (EffectOnActivation)onActElement;
+                    DictionaryEffects.EffectsDictionary.Add(effect.Id, EffectCreation.ApplyEffect);
+                }
+            }
         }
         else if (card.Type == "Clima")
         {

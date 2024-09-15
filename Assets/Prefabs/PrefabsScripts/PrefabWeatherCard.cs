@@ -7,4 +7,5 @@ public class PrefabWeatherCard : PrefabCard
     public Weather_Card weather_Card;
     public string Faction;
     public string WeatherType;
+    public string Owner;
 }

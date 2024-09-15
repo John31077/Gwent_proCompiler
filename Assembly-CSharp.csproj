@@ -104,6 +104,7 @@
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\Predicate.cs" />
     <Compile Include="Assets\Scripts\Effects.cs" />
     <Compile Include="Assets\Scripts\Compilador\Parser\Parser.cs" />
+    <Compile Include="Assets\Scripts\Compilador\Generación\EffectCreation.cs" />
     <Compile Include="Assets\Scripts\Herencia Card\Special_Card.cs" />
     <Compile Include="Assets\Scripts\Herencia Card\Unit_Card.cs" />
     <Compile Include="Assets\Scripts\Listas y Utiles\UtilesDeInstanciar.cs" />

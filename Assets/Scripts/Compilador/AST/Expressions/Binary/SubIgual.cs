@@ -11,7 +11,14 @@ public class SubIgual : BinaryExpression
 
     public override void Evaluate()
     {
-        Type = ExpressionType.Anytype;
+        Right.Evaluate();
+        Left.Evaluate();
+
+        double value1 = (double)Left.Value;
+        double value2 = (double)Right.Value;
+        value1 -= value2;
+        
+        Value = value1;
     }
 
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)

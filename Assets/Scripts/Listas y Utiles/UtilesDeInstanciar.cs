@@ -74,12 +74,12 @@ public class UtilesDeInstanciar : MonoBehaviour
     private void CreateDeck(GameObject player, GameObject playerDeck)
     {
         string playerFaction = player.GetComponent<ClaseJugador>().Faction;
-        if (playerFaction == empireFaction) Instanciar(scriptableDeckEmpire, playerDeck);    
-        else Instanciar(scriptableDeckOblivion, playerDeck);
+        if (playerFaction == empireFaction) Instanciar(scriptableDeckEmpire, playerDeck, player);    
+        else Instanciar(scriptableDeckOblivion, playerDeck, player);
         InstanciarLider(playerFaction, player);
         InstanciarIconDeck(player, playerDeck, playerFaction);
     }
-    private void Instanciar(GameObject scriptList, GameObject playerDeck)
+    private void Instanciar(GameObject scriptList, GameObject playerDeck, GameObject player)
     {
         List<Card> scriptCards = scriptList.GetComponent<ListaBase>().PseudoDeck;
         foreach (Card scriptCard in scriptCards)
@@ -99,8 +99,10 @@ public class UtilesDeInstanciar : MonoBehaviour
                 prefabUnitCard.Effect = unit_Card.Effect.ToString();
                 prefabUnitCard.Attack = unit_Card.Attack;
                 prefabUnitCard.Backup_Atack = unit_Card.Attack;
+                prefabUnitCard.Owner = player.name;
                 playerDeck.GetComponent<ListaBaseConGObject>().cards.Add(InstUnitCardPrefab);
                 InstUnitCardPrefab.transform.SetParent(playerDeck.transform);
+
             }
             else if (scriptCard is Weather_Card)
             {
@@ -114,6 +116,7 @@ public class UtilesDeInstanciar : MonoBehaviour
                 prefabWeatherCard.Faction = weather_Card.Faction.ToString();
                 prefabWeatherCard.WeatherType = weather_Card.WeatherType.ToString();
                 prefabWeatherCard.Effect = weather_Card.Effect.ToString();
+                prefabWeatherCard.Owner = player.name;
                 playerDeck.GetComponent<ListaBaseConGObject>().cards.Add(InstWeatherCardPrefab);
                 InstWeatherCardPrefab.transform.SetParent(playerDeck.transform);
             }
@@ -129,6 +132,7 @@ public class UtilesDeInstanciar : MonoBehaviour
                 prefabSpecialCard.Faction = special_Card.Faction.ToString();
                 prefabSpecialCard.SpecialType = special_Card.Type_Special.ToString();
                 prefabSpecialCard.Effect = special_Card.Effect.ToString();
+                prefabSpecialCard.name = player.name;
                 playerDeck.GetComponent<ListaBaseConGObject>().cards.Add(InstSpecialCardPrefab);
                 InstSpecialCardPrefab.transform.SetParent(playerDeck.transform);
             }

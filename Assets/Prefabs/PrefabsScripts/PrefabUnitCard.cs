@@ -12,5 +12,6 @@ public class PrefabUnitCard : PrefabCard
     public string UnitType;
     public int Attack;
     public int Backup_Atack;
+    public string Owner;
 
 }

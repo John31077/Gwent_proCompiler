@@ -13,7 +13,12 @@ public class Div : BinaryExpression
         Right.Evaluate();
         Left.Evaluate();
         
-        Value = (double)Right.Value / (double)Left.Value;
+        double left = (double)Left.Value;
+        double right = (double)Right.Value;
+
+        if (right == 0) right = 1;
+
+        Value = left / right;
     }
 
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)

@@ -60,7 +60,13 @@ public class And : BinaryExpression
 
     public override void Evaluate()
     {
+        Right.Evaluate();
+        Left.Evaluate();
 
+        bool right = (bool)Right.Value;
+        bool left = (bool)Left.Value;
+        
+        Value = right && left;
     }
 }
 
@@ -102,6 +108,12 @@ public class Or : BinaryExpression
 
     public override void Evaluate()
     {
+        Right.Evaluate();
+        Left.Evaluate();
 
+        bool right = (bool)Right.Value;
+        bool left = (bool)Left.Value;
+        
+        Value = right || left;
     }
 }

@@ -7,7 +7,11 @@ public class MayorQ : BinaryExpression
     public override object? Value {get; set;}
     public override void Evaluate()
     {
-
+        Right.Evaluate();
+        Left.Evaluate();
+        
+        bool value = (double)Left.Value > (double)Right.Value;
+        Value = value;
     }
 
     public override bool CheckSemantic(Context context, Scope scope, List<CompilingError> errors)

@@ -44,7 +44,13 @@ public class Concat2 : BinaryExpression // @@
 
     public override void Evaluate()
     {
+        Right.Evaluate();
+        Left.Evaluate();
 
+        string right = (string)Right.Value;
+        string left = (string)Left.Value;
+        
+        Value = right + " "  + left;
     }
     public Concat2(CodeLocation location) : base(location){}
     public override string ToString()
