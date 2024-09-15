@@ -42,7 +42,10 @@ public class MetodosUtilesUnity : MonoBehaviour //Metodos que no pude dejar sola
 
         foreach (GameObject card in originList)
         {
-            if (card.GetComponent<PrefabUnitCard>().UnitType == Unit_Card.EType.Gold.ToString()) continue;
+            if (card.GetComponent<PrefabUnitCard>())
+            {
+                if (card.GetComponent<PrefabUnitCard>().UnitType == Unit_Card.EType.Gold.ToString()) continue;
+            }
 
             destinyList.Add(card);
             card.transform.SetParent(destiny.transform);
@@ -52,7 +55,10 @@ public class MetodosUtilesUnity : MonoBehaviour //Metodos que no pude dejar sola
         {
             for (int i = 0; i < originList.Count; i++)
             {
-                if (originList[i].GetComponent<PrefabUnitCard>().UnitType == Unit_Card.EType.Gold.ToString()) continue;
+                if (originList[i].GetComponent<PrefabUnitCard>())
+                {
+                    if (originList[i].GetComponent<PrefabUnitCard>().UnitType == Unit_Card.EType.Gold.ToString()) continue;
+                }
 
                 originList.Remove(originList[i]);
                 i--;

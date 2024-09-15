@@ -10,6 +10,8 @@ using Debug = UnityEngine.Debug;
 public class Programa
 {
 	public static bool IsFirstAssign = false;
+	public static bool ValidToGenerate = false;
+	public static ElementalProgram elementalProgram;
 
 	public static void Main(string code)
 	{
@@ -69,7 +71,8 @@ public class Programa
      		}
 			else
 			{
-				Debug.Log("Chequeo semantico");
+				ValidToGenerate = true;
+				elementalProgram = program;
 			}
 		}
 

@@ -118,7 +118,14 @@ card {
 
 
 
-
+card {
+	Type: "Lider",
+	Name: "Peeeeee",
+	Faction: "Empire",
+	Power: 5,
+	Range: ["Melee"],
+	OnActivation: []
+}
 
 
 

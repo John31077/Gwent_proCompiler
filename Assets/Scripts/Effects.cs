@@ -299,6 +299,10 @@ public class Effects : MonoBehaviour
         int TotalAtack = M1_TotalAttack + M2_TotalAttack + R1_TotalAttack + R2_TotalAttack + S1_TotalAttack + S2_TotalAttack;
         int TotalCardCount = M1.Count + M2.Count + R1.Count + R2.Count + S1.Count + S2.Count;
 
+        if (TotalCardCount == 0)
+        {
+            TotalCardCount = 1;
+        }
         int Total = TotalAtack/TotalCardCount;
         
         SetAverageAttackList(Total, M1);

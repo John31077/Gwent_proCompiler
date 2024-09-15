@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\Compilador\Dictionarys.cs" />
     <Compile Include="Assets\Scripts\Compilador\Lexical\LexicalAnalyzer.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Program.cs" />
+    <Compile Include="Assets\Scripts\Compilador\Generación\CardCreation.cs" />
     <Compile Include="Assets\Scripts\ClaseJugador.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Binary\MayorIgual.cs" />
     <Compile Include="Assets\Scripts\Compilador\AST\Expressions\Atoms\Identifier.cs" />
