@@ -21,11 +21,12 @@ public class CardCreation : MonoBehaviour
         Dictionary<string, CardG> cards = elementalProgram.Cards;
         Dictionary<string, Effect> effects = elementalProgram.Effects;
 
-
         foreach (var card in cards)
         {
             GenerateCard(card.Key, card.Value);
         }
+        
+        //EffectCreation.AddCompilerEffect(effects);
 
     }
 
@@ -50,7 +51,7 @@ public class CardCreation : MonoBehaviour
 
         string faction1 = VerificateFaction(deck1);
         string faction2 = VerificateFaction(deck2);
-
+        
 
         if (card.Type == "Oro" || card.Type == "Plata")
         {
@@ -80,18 +81,11 @@ public class CardCreation : MonoBehaviour
                 else if (card.faction == faction2) 
                 {
                     deck2.cards.Add(card1);
-                    card1.transform.SetParent(deckP1.transform);
+                    card1.transform.SetParent(deckP2.transform);
                 }
             }
             
-            foreach (ASTNode onActElement in card.OnActivation)
-            {
-                if (onActElement is EffectOnActivation)
-                {
-                    EffectOnActivation effect = (EffectOnActivation)onActElement;
-                    DictionaryEffects.EffectsDictionary.Add(effect.Id, EffectCreation.ApplyEffect);
-                }
-            }
+            DictionaryEffects.EffectsDictionary.Add("ApplyEffect", EffectCreation.ApplyEffect);
         }
         else if (card.Type == "Clima")
         {
@@ -177,6 +171,7 @@ public class CardCreation : MonoBehaviour
             prefabUnitCard.Attack = (int)power;
             prefabUnitCard.Backup_Atack = prefabUnitCard.Attack;
             prefabUnitCard.Board_Section = card.range;
+            prefabUnitCard.Effect = "ApplyEffect";
 
             return generatedCard;
     }

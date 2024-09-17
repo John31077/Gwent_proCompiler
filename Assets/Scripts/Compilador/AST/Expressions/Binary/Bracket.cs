@@ -130,9 +130,52 @@ public class Bracket : BinaryExpression
         return Value.ToString();
     }
 
-    public override void Evaluate()
+    public override void Evaluate() //Algunos brackets se tienen que usar en el dotNotation debido a la forma de implementacion en el Parser
     {
-        
+        if (Right != null) Right.Evaluate();
+        Left.Evaluate();
+
+        List<GameObject> list = new List<GameObject>();
+
+        if (Left.Value.ToString() == "HandOfPlayer")
+        {
+            string triggerPlayer = (string)Right.Value;
+
+            if (triggerPlayer == EffectCreation.player1.name) list = EffectCreation.h1;
+            else list = EffectCreation.h2;
+
+            Value = list;
+            return;
+        }
+        else if (Left.Value.ToString() == "DeckOfPlayer")
+        {
+            string triggerPlayer = (string)Right.Value;
+
+            if (triggerPlayer == EffectCreation.player1.name) list = EffectCreation.deck1;
+            else list = EffectCreation.deck2;
+
+            Value = list;
+            return;
+        }
+        else if (Left.Value.ToString() == "FieldOfPlayer")
+        {
+            string triggerPlayer = (string)Right.Value;
+
+            list = EffectCreation.FieldOfPlayerList(triggerPlayer);
+
+            Value = list;
+            return;
+        }
+        else if (Left.Value.ToString() == "GraveyardOfPlayer")
+        {
+            string triggerPlayer = (string)Right.Value;
+
+            if (triggerPlayer == EffectCreation.player1.name) list = EffectCreation.g1;
+            else list = EffectCreation.g2;
+
+            Value = list;
+            return;
+        }
     }
 }
 

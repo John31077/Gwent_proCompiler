@@ -497,7 +497,6 @@ public class Effects : MonoBehaviour
     //Metodo que limpia cualquier clima que se encuentre activo en el juego
     public static void SunnyEffect(GameObject card)
     {
-        Debug.Log("entro al soleado");
         List<GameObject> weatherList = WeatherSection.GetComponent<ListaBaseConGObject>().cards;
         List<GameObject> graveyardList = Graveyard2.GetComponent<ListaBaseConGObject>().cards;    
 

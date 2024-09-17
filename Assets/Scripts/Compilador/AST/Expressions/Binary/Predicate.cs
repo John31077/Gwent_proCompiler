@@ -24,11 +24,7 @@ public class Predicate : BinaryExpression
     }
     public override void Evaluate()
     {
-        /*Right.Evaluate();
-        Left.Evaluate();
         
-        bool value = (double)Left.Value >= (double)Right.Value;
-        Value = value;*/
     }
 
     public override string ToString()

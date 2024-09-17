@@ -67,6 +67,8 @@ public class Indexador : BinaryExpression
         Right.Evaluate();
         Left.Evaluate();
 
+
+
         List<GameObject> list = new List<GameObject>();
 
         double indexer1 = (double)Right.Value;

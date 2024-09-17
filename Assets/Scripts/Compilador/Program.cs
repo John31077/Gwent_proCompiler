@@ -71,6 +71,7 @@ public class Programa
      		}
 			else
 			{
+				Debug.Log("Chequeo semantico finalizado");
 				ValidToGenerate = true;
 				elementalProgram = program;
 			}

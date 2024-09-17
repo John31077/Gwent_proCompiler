@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 public class DotNotation : BinaryExpression
@@ -158,16 +160,25 @@ public class DotNotation : BinaryExpression
 
     public override void Evaluate()
     {
+        Right.Evaluate();
         Left.Evaluate();
-        //Right.Evaluate();
+
+        bool Continue = false;
 
         if ((Left.Value is Identifier) && (Left.Value.ToString() == "context" || EffectCreation.identifiers.ContainsKey(Left.Value.ToString())))
         {
             if (EffectCreation.identifiers.ContainsKey(Left.Value.ToString()))
             {
-                Left.Value = EffectCreation.identifiers[Left.Value.ToString()];
-                Left.Evaluate();
+                if (EffectCreation.identifiers[Left.Value.ToString()].Value.ToString() == "context")
+                {
+                    Left.Value = EffectCreation.identifiers[Left.Value.ToString()];
+                    Left.Evaluate();
+                    Continue = true;
+                }
             }
+            
+            if (Continue) // Esto es para evitar que entre con un identificador incorrecto a ejecutarse como context
+            {
 
             if (Right is Identifier)
             {
@@ -175,11 +186,13 @@ public class DotNotation : BinaryExpression
                 {
                     string triggerPlayer = EffectCreation.VerificatePlayer();
                     Value = triggerPlayer;
+                    return;
                 }
                 else if (Right.Value.ToString() == "Board")
                 {
                     EffectCreation.BoardList();
                     Value = EffectCreation.board;
+                    return;
                 }
                 else if (Right.Value.ToString() == "Hand")
                 {
@@ -190,6 +203,7 @@ public class DotNotation : BinaryExpression
                     else hand = EffectCreation.h2;
 
                     Value = hand;
+                    return;
                 }
                 else if (Right.Value.ToString() == "Deck")
                 {
@@ -200,6 +214,7 @@ public class DotNotation : BinaryExpression
                     else deck = EffectCreation.deck2;
 
                     Value = deck;
+                    return;
                 }
                 else if (Right.Value.ToString() == "Field")
                 {
@@ -209,6 +224,7 @@ public class DotNotation : BinaryExpression
                     field = EffectCreation.FieldOfPlayerList(triggerPlayer);
 
                     Value = field;
+                    return;
                 }
                 else if (Right.Value.ToString() == "Graveyard")
                 {
@@ -219,30 +235,142 @@ public class DotNotation : BinaryExpression
                     else graveyard = EffectCreation.g2;
 
                     Value = graveyard;
+                    return;
                 }
             }
-            else if (Right is Indexador)
+            else if (Right is Bracket)
             {
+                Right.Evaluate();
+                Value = Right.Value;
+                return;
+            }
+            else if (Right is Indexador) //El indexador despues del context. es complicado debido a su forma de parsear
+            {
+                Indexador index = (Indexador)Right;
+                index.Right.Evaluate();
+                int indexer = (int)index.Right.Value;
                 
+                if (index.Left is Bracket) //Parece que despues de un context. nunca viene un Find(Predicate) ni con el indexador
+                {
+                    Bracket bracket = (Bracket)index.Left;
+
+                    bracket.Evaluate();
+                    index.Left.Value = bracket.Value;
+                    Value = EffectCreation.VerificateIndexer(indexer, (List<GameObject>)index.Left.Value);
+                    return;
+                }
+                else if (index.Left is Identifier)
+                {
+                    Value = EffectCreation.VerificateIdentifierLeftIndexer(index.Left.ToString(), indexer);
+                    return;
+                }
+            }
             }
         }
+        else if (Left is DotNotation || (Left is Identifier && EffectCreation.identifiers.ContainsKey(Left.Value.ToString())))
+        {
+            if (Left is Identifier && EffectCreation.identifiers.ContainsKey(Left.Value.ToString()))
+            {
+                Left.Value = EffectCreation.identifiers[Left.Value.ToString()].Value;
+                Left.Evaluate();
+            }
 
 
+            if (Left.Value is List<GameObject>)
+            {
+                List<GameObject> list = (List<GameObject>)Left.Value;
 
+                if (Right is Bracket)
+                {
+                    Bracket bracket = (Bracket)Right;
 
+                    if (bracket.Left.Value.ToString() == "Shuffle")
+                    {
+                        MetodosUtiles.Shuffle(list);
+                        Value = list;
+                        return;
+                    }
+                    else if (bracket.Left.Value.ToString() == "Push")
+                    {
+                        bracket.Right.Evaluate();
+                        GameObject card = (GameObject)bracket.Right.Value;
+                        EffectCreation.Push(list, card);
+                        Value = list;
+                        return;
+                    }
+                    else if (bracket.Left.Value.ToString() == "Remove")
+                    {
+                        bracket.Right.Evaluate();
+                        GameObject card = (GameObject)bracket.Right.Value;
+                        EffectCreation.Remove(list, card);
+                        Value = list;
+                        return;
+                    }
+                    else if (bracket.Left.Value.ToString() == "SendBottom")
+                    {
+                        bracket.Right.Evaluate();
+                        GameObject card = (GameObject)bracket.Right.Value;
+                        EffectCreation.SendBottom(list, card);
+                        Value = list;
+                        return;
+                    }
+                    else if (bracket.Left.Value.ToString() == "Pop")
+                    {
+                        GameObject card = EffectCreation.Pop(list);
+                        Value = card;
+                        return;
+                    }
+                    else if (bracket.Left.Value.ToString() == "Find")
+                    {
+                        EffectCreation.predicateList = list;
+                        Value = EffectCreation.PredicateList(list, (Predicate)bracket.Right);
+                        return;
+                    }
+                }
+                else if (Right is Indexador) //Solamente puede venir un Find(predicate) antes de un indexer si hay una lista en la izq
+                {
+                    Indexador indexador = (Indexador)Right;
+                    Bracket bracket = (Bracket)indexador.Left;
+                    Predicate predicate = (Predicate)bracket.Right;
 
+                    EffectCreation.predicateList = list;
+                    List<GameObject> filterList = EffectCreation.PredicateList(list, predicate);
+                    indexador.Right.Evaluate();
+                    int indexer = (int)indexador.Right.Value;
 
+                    if (filterList.Count == 0)
+                    {
+                        Debug.Log("No se puede indexar la lista");
+                        Value = filterList;
+                        return;
+                    }
 
+                    if (indexer < 0 || indexer >= filterList.Count)
+                    {
+                        Debug.Log("El indexer no está dentro del tamaño de la lista");
+                        Value = filterList;
+                        return;
+                    }
 
+                    Value = filterList[indexer];
+                    return;
+                }
+            }
+            else if (Left.Value is GameObject || (Left.Value is Identifier && Left.Value.ToString() == "card"))
+            {
+                GameObject card = null;
 
+                //Todo esto del if y else es debido a el predicado, no se verá un "card" en un lugar que no sea el right de un predicate, no se rompe la asignacion del indexer debido a que el metodo del predicate verifica que la lista no este vacia
+                if (Left.Value is Identifier && Left.Value.ToString() == "card") card = EffectCreation.predicateList[EffectCreation.cardIndex];
+                else card = (GameObject)Left.Value;
 
-
-
-
-
-
-
-
-
+                if (Right is Keyword || Right.Value.ToString() == "Owner")
+                {
+                    string property = EffectCreation.CardPropertyString(card, Right.Value.ToString());
+                    Value = property;
+                    return;
+                }
+            }
+        }
     }
 }

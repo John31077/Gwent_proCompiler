@@ -23,7 +23,7 @@ public class Identifier : AtomExpression
     
     public override bool CheckSemantic(Context context, Scope table, List<CompilingError> errors)
     {
-        if (this.Value.ToString() == "target" || this.Value.ToString() == "unit")
+        if (this.Value.ToString() == "target" || this.Value.ToString() == "unit" || this.Value.ToString() == "card")
         {
             Type = ExpressionType.Card;
         }

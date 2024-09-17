@@ -39,14 +39,6 @@ public class ElementalProgram : ASTNode
         return checkCards && checkEffects;
     }
 
-    /*public void Evaluate()
-    {
-        foreach (CardG card in Cards.Values)
-        {
-            card.Evaluate();
-        }
-    }
-*/
     public override string ToString()
     {
         string s = "";

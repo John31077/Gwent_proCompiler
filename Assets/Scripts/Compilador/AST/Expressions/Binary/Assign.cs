@@ -28,7 +28,13 @@ public class Assign : BinaryExpression
                 scope.varYValores[Left.Value.ToString()] = Right;
             }
 
-            EffectCreation.identifiers.Add(Left.Value.ToString(), Right);
+            if (EffectCreation.identifiers.ContainsKey(Left.Value.ToString()))
+            {
+                EffectCreation.identifiers[Left.Value.ToString()] = Right;
+            }
+            else EffectCreation.identifiers.Add(Left.Value.ToString(), Right);
+
+            
 
             Type = ExpressionType.Anytype;
             return right && left;

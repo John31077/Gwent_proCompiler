@@ -132,7 +132,7 @@ public class UtilesDeInstanciar : MonoBehaviour
                 prefabSpecialCard.Faction = special_Card.Faction.ToString();
                 prefabSpecialCard.SpecialType = special_Card.Type_Special.ToString();
                 prefabSpecialCard.Effect = special_Card.Effect.ToString();
-                prefabSpecialCard.name = player.name;
+                prefabSpecialCard.Owner = player.name;
                 playerDeck.GetComponent<ListaBaseConGObject>().cards.Add(InstSpecialCardPrefab);
                 InstSpecialCardPrefab.transform.SetParent(playerDeck.transform);
             }

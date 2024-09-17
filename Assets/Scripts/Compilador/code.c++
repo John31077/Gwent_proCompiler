@@ -118,13 +118,45 @@ card {
 
 
 
+
+effect {
+		Name: "Damage" ,
+		Params: {
+				Amount: Number
+				},
+				Action: (targets, context) => {
+					for target in targets {
+						i = 0;
+						a = 5;
+						while (i < Amount)
+						{
+						target.Power -= 1;
+						};
+					};
+				}
+			}
+
+
+
+effect {
+		Name: "Test" ,
+				Action: (targets, context) => {
+					d = 6;
+				}
+			}
+
+
 card {
-	Type: "Lider",
-	Name: "Peeeeee",
+	Type: "Plata",
+	Name: "Peeeeesssssssssssse",
 	Faction: "Empire",
 	Power: 5,
 	Range: ["Melee"],
-	OnActivation: []
+	OnActivation: [
+		{
+			Effect : "Test",,
+		}
+	]
 }
 
 

@@ -1455,7 +1455,6 @@ public class Parser
         {
             return new Keyword(Stream.LookAhead().Value, Stream.LookAhead().Location);
         }
-
         return null;
     }
     private Expression? ParseBool()

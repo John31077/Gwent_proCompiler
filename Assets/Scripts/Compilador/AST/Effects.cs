@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Unity.VisualScripting;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class Effect : ASTNode
@@ -10,6 +11,8 @@ public class Effect : ASTNode
     public List<Parametro> ParamsExpresions;
 
     public List<ASTNode> ActionList;
+
+    public List<GameObject> listSelector;
 
     public Effect(string id, CodeLocation location) : base (location)
     {
