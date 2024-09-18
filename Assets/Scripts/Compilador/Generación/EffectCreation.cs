@@ -81,7 +81,6 @@ class EffectCreation : MonoBehaviour
         
         CardG cardG = cards[cardName];
         List<ASTNode> onActivation = cardG.OnActivation;
-        Debug.Log(onActivation.Count + " cantidad de cosas en onActivation de la carta");
 
         EffectOnActivation onEffect = null;
         SelectorOnActivation onSelector = null;
@@ -188,7 +187,7 @@ class EffectCreation : MonoBehaviour
         }
 
 
-
+       
 
 
         if (onSelector != null) //Entra si el selector no es nulo
@@ -211,6 +210,7 @@ class EffectCreation : MonoBehaviour
             effect.listSelector = result;
             //Hasta aqui, el efecto tiene un selector y se llenó la lista de listSelector (targets) del efecto
         }
+
 
         List<ASTNode> effectInstructions = effect.ActionList;
 
@@ -235,6 +235,8 @@ class EffectCreation : MonoBehaviour
         {
             ApplyEffect(card, elementalProgram);
         }
+
+        
     }
 
     public static List<GameObject> SourceList(string source)
@@ -407,7 +409,22 @@ class EffectCreation : MonoBehaviour
 
     public static void Push(List<GameObject> list, GameObject card)
     {
-        list.Add(card);
+        if (!list.Contains(card)) list.Add(card);
+        else 
+        {
+            int index = list.IndexOf(card);
+            GameObject lastElement = list[list.Count];
+            list[list.Count] = card;
+            list[index] = lastElement;
+        }
+    }
+
+    public static List<GameObject> Add(List<GameObject> list, GameObject card)
+    {
+        if (list.Contains(card)) Debug.Log("La carta ya se encuentra en la lista");
+        else list.Add(card);
+
+        return list;
     }
 
     public static void Remove(List<GameObject> list, GameObject card)
@@ -418,16 +435,17 @@ class EffectCreation : MonoBehaviour
 
     public static void SendBottom(List<GameObject> list, GameObject card)
     {
-        list.Add(card);
-        
-        if (list.Count > 1)
+        if (!list.Contains(card))
         {
-            GameObject card1 = list[list.Count-1];
-            for (int i = list.Count-1 ; i >= 1; i--)
-            {
-                list[i] = list[i-1];
-            }
-            list[0] = card1;
+            if (list.Count == 0) list.Add(card);
+            else list.Insert(0, card);
+        }
+        else
+        {
+            int index = list.IndexOf(card);
+            GameObject firstElement = list[0];
+            list[0] = card;
+            list[index] = firstElement;
         }
     }
 

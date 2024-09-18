@@ -146,21 +146,37 @@ effect {
 			}
 
 
+
+effect {
+		Name: "NewEffect",
+		Action: (targets, context) => {
+			element = context.Deck[3];
+			num = element.Power;
+			}
+		}
+
+effect {
+		Name: "Draw",
+		Action: (targets, context) => {
+			topCard = context.Deck.Pop();
+			context.Hand.Add(topCard);
+			context.Hand.Shuffle();
+			}
+		}
+
+
 card {
 	Type: "Plata",
 	Name: "Peeeeesssssssssssse",
 	Faction: "Empire",
 	Power: 5,
-	Range: ["Melee"],
+	Range: ["Ranged"],
 	OnActivation: [
 		{
-			Effect : "Test",,
+			Effect : "Draw",,
 		}
 	]
 }
-
-
-
 
 
 
@@ -254,24 +270,6 @@ card {
 		}
 	]
 }
-
-
-
-
-
-
-
-		effect {
-			Name: "Damageeeeee" ,
-			Params: 
-			{
-				Amount: Number
-			},
-			Action: (targets, context) => 
-			{
-				target.Hand.Find((perro) => 5+5)[5].Power = target.Hand[1+1].Find(perro);
-			}
-		}
 
 
 

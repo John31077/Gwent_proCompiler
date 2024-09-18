@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.Analytics;
 using Debug = UnityEngine.Debug;
 public class DotNotation : BinaryExpression
 {
@@ -39,6 +40,7 @@ public class DotNotation : BinaryExpression
             Right.Value.ToString()==IdentifierType.Type.ToString()||Right.Value.ToString()==IdentifierType.Faction.ToString()||
             Right.Value.ToString()==IdentifierType.Range.ToString()))
         {
+            
             if (Left.Type != ExpressionType.Card)
             {
                 errors.Add(new CompilingError(Location, ErrorCode.Invalid, "Left expression must be a card"));
@@ -160,12 +162,13 @@ public class DotNotation : BinaryExpression
 
     public override void Evaluate()
     {
-        Right.Evaluate();
         Left.Evaluate();
+        Right.Evaluate();
 
+        
         bool Continue = false;
 
-        if ((Left.Value is Identifier) && (Left.Value.ToString() == "context" || EffectCreation.identifiers.ContainsKey(Left.Value.ToString())))
+        if ((Left is Identifier) && (Left.Value.ToString() == "context" || (EffectCreation.identifiers.ContainsKey(Left.Value.ToString()) && EffectCreation.identifiers[Left.Value.ToString()].Value.ToString() == "context")))
         {
             if (EffectCreation.identifiers.ContainsKey(Left.Value.ToString()))
             {
@@ -176,7 +179,9 @@ public class DotNotation : BinaryExpression
                     Continue = true;
                 }
             }
-            
+
+            if (Left.Value.ToString() == "context") Continue = true;
+
             if (Continue) // Esto es para evitar que entre con un identificador incorrecto a ejecutarse como context
             {
 
@@ -213,6 +218,7 @@ public class DotNotation : BinaryExpression
                     if (triggerPlayer == EffectCreation.player1.name) deck = EffectCreation.deck1;
                     else deck = EffectCreation.deck2;
 
+
                     Value = deck;
                     return;
                 }
@@ -248,7 +254,8 @@ public class DotNotation : BinaryExpression
             {
                 Indexador index = (Indexador)Right;
                 index.Right.Evaluate();
-                int indexer = (int)index.Right.Value;
+                double ind = (double)index.Right.Value;
+                int indexer = (int)ind;
                 
                 if (index.Left is Bracket) //Parece que despues de un context. nunca viene un Find(Predicate) ni con el indexador
                 {
@@ -279,7 +286,6 @@ public class DotNotation : BinaryExpression
             if (Left.Value is List<GameObject>)
             {
                 List<GameObject> list = (List<GameObject>)Left.Value;
-
                 if (Right is Bracket)
                 {
                     Bracket bracket = (Bracket)Right;
@@ -326,6 +332,13 @@ public class DotNotation : BinaryExpression
                         Value = EffectCreation.PredicateList(list, (Predicate)bracket.Right);
                         return;
                     }
+                    else if (bracket.Left.Value.ToString() == "Add")
+                    {
+                        bracket.Right.Evaluate();
+                        GameObject card = (GameObject)bracket.Right.Value;
+                        Value = EffectCreation.Add(list, card);
+                        return;
+                    }
                 }
                 else if (Right is Indexador) //Solamente puede venir un Find(predicate) antes de un indexer si hay una lista en la izq
                 {
@@ -359,7 +372,6 @@ public class DotNotation : BinaryExpression
             else if (Left.Value is GameObject || (Left.Value is Identifier && Left.Value.ToString() == "card"))
             {
                 GameObject card = null;
-
                 //Todo esto del if y else es debido a el predicado, no se verá un "card" en un lugar que no sea el right de un predicate, no se rompe la asignacion del indexer debido a que el metodo del predicate verifica que la lista no este vacia
                 if (Left.Value is Identifier && Left.Value.ToString() == "card") card = EffectCreation.predicateList[EffectCreation.cardIndex];
                 else card = (GameObject)Left.Value;
@@ -367,6 +379,14 @@ public class DotNotation : BinaryExpression
                 if (Right is Keyword || Right.Value.ToString() == "Owner")
                 {
                     string property = EffectCreation.CardPropertyString(card, Right.Value.ToString());
+                    if (Right.Value.ToString() == "Power")
+                    {
+                        double power = double.Parse(property);
+                        int value = (int)power;
+                        Value = value;
+                        return;
+                    }
+
                     Value = property;
                     return;
                 }

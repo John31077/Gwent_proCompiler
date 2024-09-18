@@ -41,9 +41,14 @@ public class Indexador : BinaryExpression
             }
         }
 
+        if (Left is Identifier && (Left.ToString()=="Deck"||Left.ToString()=="Hand"||Left.ToString()=="Field"||Left.ToString()=="Graveyard"))
+        {
+            Left.Type = ExpressionType.List;
+        }
+
         
         if (Right.Type != ExpressionType.Number || Left.Type != ExpressionType.List)
-        {
+        {    
             errors.Add(new CompilingError(Location, ErrorCode.Invalid, "invalid indexer"));
             Type = ExpressionType.ErrorType;
             return false;

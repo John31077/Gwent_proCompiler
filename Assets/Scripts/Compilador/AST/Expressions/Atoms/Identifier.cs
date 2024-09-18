@@ -41,7 +41,15 @@ public class Identifier : AtomExpression
 
     public override void Evaluate()
     {
-        
+        if (EffectCreation.identifiers.ContainsKey(this.Value.ToString()))
+        {
+            UnityEngine.Debug.Log(EffectCreation.identifiers[this.Value.ToString()].Value + " fffffffffffffffffffffffffff");
+            if (this.Value == null)
+            {
+                return;
+            }
+            Value = EffectCreation.identifiers[this.Value.ToString()].Value;
+        }
     }
 
     public override string ToString()

@@ -34,9 +34,20 @@ public class Assign : BinaryExpression
             }
             else EffectCreation.identifiers.Add(Left.Value.ToString(), Right);
 
-            
 
+
+
+            EffectCreation.identifiers[Left.Value.ToString()].Evaluate();
+        
+
+            if (EffectCreation.identifiers[Left.Value.ToString()].Value is GameObject) 
+            EffectCreation.identifiers[Left.Value.ToString()].Type = ExpressionType.Card;
+            else if (EffectCreation.identifiers[Left.Value.ToString()].Value is List<GameObject>)
+            EffectCreation.identifiers[Left.Value.ToString()].Type = ExpressionType.List;
+            else
             Type = ExpressionType.Anytype;
+
+
             return right && left;
         }
 
@@ -80,7 +91,19 @@ public class Assign : BinaryExpression
 
     public override void Evaluate()
     {
+        Right.Evaluate();
+        Left.Evaluate();
         
+
+        if (Left is Identifier)
+        {
+            
+            if (EffectCreation.identifiers.ContainsKey(Left.Value.ToString()))
+            {
+                EffectCreation.identifiers[Left.Value.ToString()] = Right;
+            }
+
+        }
     }
 
     public override string ToString()
